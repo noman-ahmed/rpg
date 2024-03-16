@@ -1,0 +1,16 @@
+.BoxTheme {
+  display: flex;
+  flex-grow: 1;
+  padding: 3;
+  background-color: #ffffff;
+  color: #000;
+  border-top: 1px solid #1e252c;
+  border-top: 3px solid #ea80fc;
+  justify-content: center;
+  align-items: center;
+  background-image: url("src/assets/gamebg.png");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  background-size: 40%;
+}

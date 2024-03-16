@@ -1,0 +1,75 @@
+body {
+  font-family: var(--font-family);
+  line-height: 1.5;
+  font-weight: 400;
+  color: var(--color-text);
+  background-color: var(--color-background);
+  margin: 0;
+  padding: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: var(--color-link);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color var(--transition-duration);
+}
+
+a:hover {
+  color: var(--color-link-hover);
+}
+
+h1 {
+  font-size: 3.2rem;
+  line-height: 1.1;
+}
+
+button {
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.6em 1.2em;
+  background-color: var(--color-button-bg);
+  color: var(--color-text);
+  border: 1px solid transparent;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: border-color var(--transition-duration);
+}
+
+button:hover {
+  border-color: var(--color-button-border-hover);
+}
+
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --color-text: #213547;
+    --color-background: #ffffff;
+    --color-link-hover: #747bff;
+    --color-button-bg: #f9f9f9;
+  }
+}
+
+main {
+  flex-grow: 1;
+  padding: 3rem;
+  text-align: center;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  max-width: 1000px; /* Consider using 'width' instead of 'max-width' if you want a fixed width */
+  margin: auto; /* Center the main content if less than the max width */
+}

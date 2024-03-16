@@ -1,0 +1,86 @@
+body {
+  background-color: $ {
+    isdarkmode? '#222' : "#f0f0f0";
+  }
+  color: $ {
+    isdarkmode? '#fff' : "#000";
+  }
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.login-container.dark-theme {
+  background-color: #222;
+  color: #fff;
+}
+
+.login-container h1 {
+  margin-bottom: 20px;
+  font-size: 2em;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #fff;
+}
+
+.login-container.dark-theme form {
+  border-color: #444;
+  background-color: #333;
+}
+
+label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="password"] {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  margin-bottom: 10px;
+  background-color: #fff;
+  color: #000;
+}
+
+.login-container.dark-theme input[type="text"],
+.login-container.dark-theme input[type="password"] {
+  border-color: #444;
+  background-color: #444;
+  color: #fff;
+}
+
+.error-input {
+  border-color: red;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.8em;
+  margin-bottom: 5px;
+}
+
+button[type="submit"] {
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button[type="submit"]:hover {
+  background-color: #45a049;
+}

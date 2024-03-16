@@ -1,0 +1,119 @@
+/* General Styles */
+:root {
+  --highlight-color: #ea80fc;
+  --background-default: inherit;
+  --text-color-default: #fff;
+  --nav-height: 60px;
+  --mobile-breakpoint: 768px;
+}
+
+* {
+  font-family: "Roboto", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Header and Navigation Styles */
+.nav {
+  background: var(--background-default);
+  color: var(--text-color-default);
+  line-height: var(--nav-height);
+  max-width: 1028px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between; /* Adjusted for positioning hamburger icon */
+  flex-wrap: wrap;
+  align-items: center; /* Centers items vertically */
+}
+
+.nav-wrapper {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.nav-menu {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  padding-left: 0;
+  margin: 0; /* Reset margin for alignment */
+}
+
+.nav-li {
+  margin: 5px;
+}
+
+.nav-link {
+  color: var(--text-color-default);
+  font-size: 1em;
+  font-weight: 500;
+  letter-spacing: 1px;
+  margin: 0 10px;
+  padding: 10px 4px;
+  position: relative;
+  text-decoration: none;
+  transition: color 0.5s ease, background-color 0.5s ease;
+}
+
+.nav-link::before,
+.nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--highlight-color);
+  transition: width 0.5s ease;
+}
+
+.nav-link:hover::before,
+.nav-link.active::before {
+  width: 100%;
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+  background: transparent;
+}
+
+/* Hamburger Menu Icon */
+.hamburger {
+  display: none;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  /* Directly use the pixel value here */
+  .hamburger {
+    display: block;
+  }
+
+  .nav-menu {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+  }
+
+  .nav-menu.active {
+    display: flex;
+  }
+
+  .nav-wrapper {
+    flex-direction: column;
+  }
+
+  .nav-li,
+  .nav-link {
+    width: 100%;
+    text-align: center;
+  }
+}
