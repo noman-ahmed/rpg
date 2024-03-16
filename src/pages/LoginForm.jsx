@@ -44,7 +44,13 @@ function LoginForm() {
       autoComplete="off"
       onSubmit={handleSubmit}
       sx={{
-        "& .MuiTextField-root": { m: 1, width: "25ch" },
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        "& .MuiTextField-root": {
+          m: 1,
+          width: { xs: "90%", sm: "80%", md: "25ch" },
+        }, // Responsive width
         textAlign: "center",
       }}
     >

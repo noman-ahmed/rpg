@@ -2,16 +2,22 @@ import React from "react";
 import LoginForm from "./LoginForm.jsx";
 import { Link } from "react-router-dom";
 import { Box, Grid, Typography, Button } from "@mui/material";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import {
+  createTheme,
+  responsiveFontSizes,
+  ThemeProvider,
+} from "@mui/material/styles";
 import styles from "../components/layout/layout.module.css";
 
-const theme = createTheme({
+let theme = createTheme({
   palette: {
     primary: {
-      main: "#ea80fc", // Using Pokémon-themed pink as primary color
+      main: "#ea80fc",
     },
   },
 });
+
+theme = responsiveFontSizes(theme);
 
 function Login() {
   return (

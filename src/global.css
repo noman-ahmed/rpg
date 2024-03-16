@@ -140,11 +140,6 @@ p.slot {
   margin: 0 auto;
 }
 
-.background-image {
-  background-image: url("images/image.png");
-  background-repeat: repeat;
-}
-
 .form-input::before {
   border-bottom: 1px solid rgba(255, 255, 255, 0.7) !important;
 }

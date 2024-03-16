@@ -13,7 +13,7 @@ import {
 import { createTheme } from "@mui/material/styles";
 import Pokemon from "./Pokemon";
 import styles from "../components/layout/layout.module.css";
-import placeholderImage from "../assets/pikachu.png"; // Add your placeholder image path here
+import placeholderImage from "../assets/pikachu.png"; // Make sure this path is correct
 
 // Theme for the MUI components
 const theme = createTheme({
@@ -26,8 +26,8 @@ const theme = createTheme({
 
 const Battle = () => {
   const [pokemonList, setPokemonList] = useState([]);
-  const [selectedPokemon1, setSelectedPokemon1] = useState("");
-  const [selectedPokemon2, setSelectedPokemon2] = useState("");
+  const [selectedPokemon1, setSelectedPokemon1] = useState(null);
+  const [selectedPokemon2, setSelectedPokemon2] = useState(null);
 
   useEffect(() => {
     const fetchPokemonList = async () => {
@@ -50,7 +50,7 @@ const Battle = () => {
       if (reason === "clear") {
         setter(""); // Reset to default if the clear button is clicked
       } else {
-        setter(value.toLowerCase());
+        setter(value ? value.toLowerCase() : "");
       }
     },
     []
@@ -59,33 +59,32 @@ const Battle = () => {
   const NoPokemonSelectedCard = () => (
     <Card
       sx={{
-        maxWidth: "345px", // Match the width of Pokemon card
+        maxWidth: "345px",
         margin: "auto",
         display: "flex",
-        flexDirection: "column", // Set the direction of content to column as the Pokemon card might be
-        alignItems: "center", // Align items to center
-        justifyContent: "space-between", // Distribute space evenly
-        height: "100%", // Set the height to match the Pokemon card
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "space-between",
+        height: "100%",
       }}
     >
       <CardMedia
         component="img"
-        image={placeholderImage} // Ensure you have a placeholder image in your project
+        image={placeholderImage}
         alt="No Pokemon Selected"
         sx={{
-          // Adjust the size and display of the placeholder image
-          width: "auto", // Set width to auto to maintain aspect ratio
-          height: 100, // Set a fixed height similar to Pokemon image
-          padding: 2, // Add some padding around the image
+          width: "auto",
+          height: 100,
+          padding: 2,
         }}
       />
       <CardContent
         sx={{
-          flexGrow: 1, // Allow the content to grow if needed
-          display: "flex", // Use flex layout for the content
-          flexDirection: "column", // Set the direction of content to column
-          alignItems: "center", // Center align the content
-          justifyContent: "center", // Center content vertically
+          flexGrow: 1,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
         }}
       >
         <Typography gutterBottom variant="h5" component="div">
@@ -106,22 +105,22 @@ const Battle = () => {
           sx={{ width: "100%", maxWidth: 1200 }}
         >
           <Grid item xs={12}>
-            <Typography variant="h3" sx={{ mb: 4, textAlign: "center" }}>
+            <Typography variant="h3" sx={{ mb: 4, textAlign: "center", mt: 2 }}>
               Battle
             </Typography>
           </Grid>
-          <Grid item xs={5} sx={{ textAlign: "center" }}>
+          <Grid item xs={12} md={5} sx={{ textAlign: "center" }}>
             <Autocomplete
               value={selectedPokemon1}
               onChange={handleChange(setSelectedPokemon1)}
-              onInputChange={handleChange(setSelectedPokemon1)} // Detect changes in the input field
               options={pokemonList}
+              isOptionEqualToValue={(option, value) => option === value}
               renderInput={(params) => (
                 <TextField
                   {...params}
                   label="Select Pokémon 1"
                   variant="standard"
-                  sx={{ maxWidth: "auto", mb: 8 }}
+                  sx={{ maxWidth: "345px", mb: 8 }}
                 />
               )}
             />
@@ -131,29 +130,27 @@ const Battle = () => {
               <NoPokemonSelectedCard />
             )}
           </Grid>
-          <Grid item>
-            <Typography variant="h4" sx={{ mt: 12 }}>
+          <Grid item xs={12} md={2} sx={{ textAlign: "center" }}>
+            <Typography variant="h4" sx={{ mx: 2, mt: { xs: 2, md: 12 } }}>
               vs.
             </Typography>
           </Grid>
-          <Grid item xs={5} sx={{ textAlign: "center" }}>
+          <Grid item xs={12} md={5} sx={{ textAlign: "center" }}>
             <Autocomplete
               value={selectedPokemon2}
               onChange={handleChange(setSelectedPokemon2)}
-              onInputChange={handleChange(setSelectedPokemon2)} // Detect changes in the input field
               options={pokemonList}
+              isOptionEqualToValue={(option, value) => option === value}
               renderInput={(params) => (
                 <TextField
                   {...params}
                   label="Select Pokémon 2"
                   variant="standard"
-                  sx={{
-                    maxWidth: "345px",
-                    mb: 8,
-                  }}
+                  sx={{ maxWidth: "345px", mb: 8 }}
                 />
               )}
             />
+
             {selectedPokemon2 ? (
               <Pokemon pokemonName={selectedPokemon2} />
             ) : (

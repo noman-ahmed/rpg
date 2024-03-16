@@ -45,7 +45,7 @@ const Pokemon = ({ pokemonName }) => {
     <Card
       sx={{
         position: "relative",
-        maxWidth: "345px",
+        maxWidth: "100%",
         margin: "0 auto",
         borderTop: "3px solid #ea80fc",
       }}

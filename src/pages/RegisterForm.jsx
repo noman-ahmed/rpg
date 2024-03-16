@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useTheme } from "@mui/material/styles";
+import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 import {
   Box,
   Stepper,
@@ -39,7 +39,16 @@ const teamDescriptions = {
 };
 
 function RegisterForm() {
-  const theme = useTheme();
+  let theme = createTheme({
+    palette: {
+      primary: {
+        main: "#ea80fc",
+      },
+    },
+  });
+
+  theme = responsiveFontSizes(theme);
+
   const [activeStep, setActiveStep] = useState(0);
   const [formFields, setFormFields] = useState({
     username: "",
@@ -144,19 +153,17 @@ function RegisterForm() {
                     item
                     xs={4}
                     key={name}
-                    sx={{ borderTop: "1px solid rgba(0, 0, 0, 0.12)" }}
+                    sx={{ borderTop: "1px solid rgba(0, 0, 0, 0.12)", p: 4 }}
                   >
                     <FormControlLabel
                       value={url}
                       control={<Radio />}
                       label={
-                        <Box
-                          sx={{ display: "flex", alignItems: "center", p: 4 }}
-                        >
+                        <Box sx={{ display: "flex", alignItems: "center" }}>
                           <Avatar
                             sx={{
-                              width: 24,
-                              height: 24,
+                              width: 64,
+                              height: 64,
                               marginRight: theme.spacing(1),
                             }}
                             src={url}
@@ -221,25 +228,54 @@ function RegisterForm() {
   }
 
   return (
-    <Box sx={{ width: "50%" }}>
-      <Stepper activeStep={activeStep} alternativeLabel>
-        {steps.map((label) => (
-          <Step key={label}>
-            <StepLabel>{label}</StepLabel>
-          </Step>
-        ))}
-      </Stepper>
-      <Paper elevation={0} variant="outlined" sx={{ p: 2, mt: 2 }}>
-        <Box sx={{ marginTop: theme.spacing(2) }}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        width: { xs: "100%", md: "50%" },
+        mx: "auto",
+      }}
+    >
+      {/* Wrap Stepper and Paper in a Box to control their widths together */}
+      <Box
+        sx={{
+          width: "100%",
+          maxWidth: 600,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Stepper
+          activeStep={activeStep}
+          alternativeLabel
+          sx={{ width: "100%", mb: 2 }}
+        >
+          {steps.map((label) => (
+            <Step key={label}>
+              <StepLabel>{label}</StepLabel>
+            </Step>
+          ))}
+        </Stepper>
+
+        <Paper
+          elevation={0}
+          variant="outlined"
+          sx={{ p: { xs: 2, sm: 3 }, mt: 2, width: "100%" }}
+        >
+          {/* Content inside Paper is already constrained to the same width by the outer Box */}
           {getStepContent(activeStep)}
           <Box
             sx={{
               display: "flex",
-              flexDirection: "row", // Set the direction of the flex container to row
-              justifyContent: "space-between", // Distribute space between items
-              alignItems: "center", // Align items vertically
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
               gap: theme.spacing(2),
-              marginTop: theme.spacing(2),
+              mt: theme.spacing(2),
+              width: "100%",
             }}
           >
             <Typography variant="body2">
@@ -249,20 +285,24 @@ function RegisterForm() {
               </MuiLink>
             </Typography>
             <Box>
-              <Button disabled={activeStep === 0} onClick={handleBack}>
+              <Button
+                disabled={activeStep === 0}
+                onClick={handleBack}
+                sx={{ textTransform: "none" }}
+              >
                 Back
               </Button>
               <Button
                 variant="contained"
                 onClick={handleNext}
-                sx={{ color: "#fff" }}
+                sx={{ textTransform: "none", color: "#fff", ml: 1 }}
               >
                 {activeStep === steps.length - 1 ? "Finish" : "Next"}
               </Button>
             </Box>
           </Box>
-        </Box>
-      </Paper>
+        </Paper>
+      </Box>
     </Box>
   );
 }
