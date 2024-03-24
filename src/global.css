@@ -250,16 +250,16 @@ form {
 
 .pokeNavWrapper {
   display: flex;
-  justify-content: right;
+  justify-content: flex-end; /* Corrected for right alignment */
   align-items: center;
-  margin-top: 10px; /* Adjust the margin as needed */
+  margin-top: 10px;
 }
 
 .pokeNavMenu {
   list-style: none;
   display: flex;
-  justify-content: center;
   padding-left: 0;
+  /* Removed justify-content: center; to allow media query to control it */
 }
 
 .pokeNavItem {
@@ -269,11 +269,11 @@ form {
   margin: 5px 10px;
   background-color: #0f1419;
   border-radius: 10px;
-  transition: all 0.3s ease; /* Smooth transition for hover effects */
+  transition: all 0.3s ease;
 }
 
 .pokeNavSprite {
-  height: 40px; /* Adjust as needed for your sprite size */
+  height: 40px;
   width: 40px;
 }
 
@@ -283,21 +283,23 @@ form {
   text-align: center;
 }
 
-/* Adding hover effect */
 .pokeNavItem:hover {
-  background-color: #3d3d3d; /* Slightly lighter background on hover */
-  border-color: #202020; /* Primary color for border */
+  background-color: #3d3d3d;
+  border-color: #202020;
 }
 
 /* Responsive styles for top nav */
-@media (max-width: var(--mobile-breakpoint)) {
+@media (max-width: 600px) {
+  /* Example breakpoint, adjust as needed */
+  .pokeNavWrapper {
+    justify-content: center; /* Center wrapper on mobile */
+  }
   .pokeNavMenu {
-    flex-direction: row;
-    justify-content: space-around;
+    justify-content: center; /* Center menu items on mobile */
     flex-wrap: wrap;
   }
   .pokeNavItem {
-    margin: 10px 0;
+    margin: 10px;
   }
 }
 

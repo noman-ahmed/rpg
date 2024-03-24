@@ -20,7 +20,7 @@ const MainContent = () => {
   return (
     <Box sx={{ display: "flex", flexDirection: "row", width: "100%" }}>
       {/* Column 1: Trainer Stats */}
-      <Box sx={{ flex: 3, marginRight: "2%" }}>
+      <Box sx={{ flex: 3, mr: "2%" }}>
         {" "}
         {/* Adjusts to about 75% width */}
         <Typography variant="h3" gutterBottom color="textPrimary">
@@ -31,6 +31,7 @@ const MainContent = () => {
           sx={{
             backgroundColor: theme.palette.background.paper,
             color: theme.palette.text.primary,
+            width: "340px",
           }}
         >
           <Table aria-label="trainer stats">
@@ -73,7 +74,14 @@ const MainContent = () => {
       </Box>
 
       {/* Column 2: News, Release Notes, Updates */}
-      <Box sx={{ flex: 1 }}>
+      <Box
+        sx={{
+          flex: 1,
+          border: "1px solid #E0E0E0",
+          borderRadius: "10px",
+          p: 4,
+        }}
+      >
         {" "}
         {/* Adjusts to about 25% width */}
         <Typography variant="h4" gutterBottom color="textPrimary">
