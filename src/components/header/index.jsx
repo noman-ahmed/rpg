@@ -15,6 +15,7 @@ const Header = () => {
     { path: "/register", label: "Register" },
     { path: "/chatroom", label: "Chat Room" },
     { path: "/battle", label: "Battle" },
+    { path: "/dashboard", label: "Dashboard" },
   ];
 
   return (

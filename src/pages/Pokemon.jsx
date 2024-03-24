@@ -1,6 +1,6 @@
-// Pokemon.js
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { motion } from "framer-motion"; // Make sure Framer Motion is imported
 import {
   Box,
   Card,
@@ -24,12 +24,13 @@ const Pokemon = ({ pokemonName }) => {
         const response = await axios.get(
           `https://pokeapi.co/api/v2/pokemon/${pokemonName}`
         );
+        // Always use the image from Pokémon Database
         const spriteUrl = `https://img.pokemondb.net/sprites/home/normal/${pokemonName.toLowerCase()}.png`;
         setPokemonData({
           name: response.data.name,
           types: response.data.types.map((typeInfo) => typeInfo.type.name),
           moves: response.data.moves.slice(0, 4).map((move) => move.move.name),
-          imageUrl: spriteUrl, // URL from Pokémon database
+          imageUrl: spriteUrl, // Uniformly using Pokémon Database for images
         });
       } catch (error) {
         console.error("Error fetching Pokémon data:", error);
@@ -57,19 +58,25 @@ const Pokemon = ({ pokemonName }) => {
           </span>
         ))}
       </Box>
-      <CardMedia
-        component="img"
-        image={pokemonData.imageUrl || ""}
-        alt={pokemonName}
-        p={3}
-        sx={{
-          width: 125,
-          height: "auto",
-          objectFit: "contain",
-          margin: "0 auto",
-          mt: 2,
-        }}
-      />
+      <motion.div
+        key={pokemonData.imageUrl} // Trigger animation on image change
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <CardMedia
+          component="img"
+          image={pokemonData.imageUrl}
+          alt={pokemonName}
+          sx={{
+            width: 125,
+            height: "auto",
+            objectFit: "contain",
+            margin: "0 auto",
+            mt: 2,
+          }}
+        />
+      </motion.div>
       <CardContent>
         <Typography
           gutterBottom
@@ -106,7 +113,7 @@ const Pokemon = ({ pokemonName }) => {
             position: "absolute",
             width: "100%",
             textAlign: "center",
-            lineHeight: "25px", // This should match the height of your LinearProgress bar
+            lineHeight: "25px",
             color: "#fff",
             fontWeight: "700",
           }}

@@ -18,10 +18,10 @@
 
 /* Header and Navigation Styles */
 .nav {
-  background: var(--background-default);
+  background-color: var(--color-dark);
   color: var(--text-color-default);
   line-height: var(--nav-height);
-  max-width: 1028px;
+  max-width: 100%;
   margin: 0 auto;
   padding: 0 20px;
   display: flex;

@@ -47,7 +47,6 @@
 
 body {
   min-height: 100vh;
-  background-color: var(--color-dark);
   color: var(--color-white);
   margin: 0;
   padding: 0;
@@ -59,7 +58,13 @@ body {
 .wrapper {
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - 145px);
+  min-height: calc(100vh - 150px);
+}
+
+.innerwrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 /* Typography */
@@ -105,34 +110,12 @@ footer {
   padding: 2rem;
   text-align: right;
   font-size: 0.8rem;
-  background-color: var(--color-white);
   color: var(--color-black) !important;
 }
 
 hr {
   border: 2px solid var(--color-magenta);
   border-radius: var(--border-radius-general);
-}
-
-/* Sidebar */
-
-p.slot,
-h2.roster-heading,
-.roster,
-h1,
-p.main {
-  padding: 1.2rem;
-  text-align: center;
-}
-
-p.slot {
-  text-align: left;
-  font-weight: 700;
-}
-
-.roster {
-  margin: 1.1rem;
-  border-bottom: 2px solid var(--color-dark-grey);
 }
 
 .container {
@@ -263,4 +246,74 @@ form {
   .paper {
     padding: 15px;
   }
+}
+
+.pokeNavWrapper {
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  margin-top: 10px; /* Adjust the margin as needed */
+}
+
+.pokeNavMenu {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  padding-left: 0;
+}
+
+.pokeNavItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 5px 10px;
+  background-color: #0f1419;
+  border-radius: 10px;
+  transition: all 0.3s ease; /* Smooth transition for hover effects */
+}
+
+.pokeNavSprite {
+  height: 40px; /* Adjust as needed for your sprite size */
+  width: 40px;
+}
+
+.pokeNavLabel,
+.pokeNavLevel {
+  color: var(--text-color-default);
+  text-align: center;
+}
+
+/* Adding hover effect */
+.pokeNavItem:hover {
+  background-color: #3d3d3d; /* Slightly lighter background on hover */
+  border-color: #202020; /* Primary color for border */
+}
+
+/* Responsive styles for top nav */
+@media (max-width: var(--mobile-breakpoint)) {
+  .pokeNavMenu {
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: wrap;
+  }
+  .pokeNavItem {
+    margin: 10px 0;
+  }
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #2c2c2c;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  background: #272727;
 }
