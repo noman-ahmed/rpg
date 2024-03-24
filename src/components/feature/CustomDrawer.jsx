@@ -96,7 +96,7 @@ const CustomDrawer = ({ menuSections }) => {
               variant="subtitle1"
               sx={{ color: textColor, fontWeight: "bold" }}
             >
-              Nomes - #1
+              #1 - Nomes
             </Typography>
           </Box>
 
