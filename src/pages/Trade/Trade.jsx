@@ -7,16 +7,14 @@ const MainContent = () => {
 
   return (
     <>
-      <Typography variant="h3" gutterBottom color="textPrimary">
-        Create a Trade{" "}
-      </Typography>
+      <Typography variant="h3" gutterBottom color="textPrimary"></Typography>
     </>
   );
 };
 
 function TradePokemon() {
   return (
-    <Layout>
+    <Layout pageTitle="Create a Trade">
       <MainContent />
     </Layout>
   );

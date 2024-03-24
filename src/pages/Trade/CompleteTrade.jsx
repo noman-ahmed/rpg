@@ -8,7 +8,7 @@ const MainContent = () => {
   return (
     <>
       <Typography variant="h3" gutterBottom color="textPrimary">
-        Complete a Trade{" "}
+        {" "}
       </Typography>
     </>
   );
@@ -16,7 +16,7 @@ const MainContent = () => {
 
 function TradeInterests() {
   return (
-    <Layout>
+    <Layout pageTitle="Complete a Trade">
       <MainContent />
     </Layout>
   );

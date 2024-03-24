@@ -1,5 +1,12 @@
 import React from "react";
-import { Box, Container, ThemeProvider } from "@mui/material";
+import {
+  Box,
+  Container,
+  ThemeProvider,
+  Typography,
+  useTheme,
+  useMediaQuery,
+} from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import CustomDrawer from "../components/feature/CustomDrawer.jsx";
 import PromoSection from "../components/feature/PromoSection";
@@ -31,8 +38,11 @@ const theme = createTheme({
   },
 });
 
-const Layout = ({ children }) => {
+const Layout = ({ children, pageTitle }) => {
   const [pokemonData, setPokemonData] = React.useState(initialPokemonData);
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const handlePokemonClick = (index) => {
     if (index !== 0) {
@@ -53,6 +63,11 @@ const Layout = ({ children }) => {
           display: "flex",
           bgcolor: "background.default",
           minHeight: "100vh",
+          backgroundImage: `url(${"src/assets/gamebg.png"})`,
+          backgroundRepeat: "no-repeat",
+          backgroundAttachment: "fixed",
+          backgroundPosition: "center",
+          backgroundSize: "50%",
         }}
       >
         <CustomDrawer
@@ -66,22 +81,43 @@ const Layout = ({ children }) => {
           component="main"
           sx={{
             flexGrow: 1,
-            p: 3,
             width: { sm: `calc(100% - ${drawerWidth}px)` },
-            backgroundColor: backgroundColor, // Ensure the main content area also uses the updated background color
+            backgroundColor: backgroundColor,
           }}
         >
-          <PokeNav
-            pokemonData={pokemonData}
-            onPokemonClick={handlePokemonClick}
-            textColor={textColor}
-          />
+          {/* This Box wraps the PokeNav and the title */}
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: isMobile ? "column-reverse" : "row", // Column-reverse for mobile, row for desktop
+              alignItems: "center",
+              justifyContent: isMobile ? "center" : "space-between", // Center for mobile, space-between for desktop
+              backgroundColor: "#f7f7f7", // Dark color as fallback
+              color: textColor,
+              pr: 4,
+              pl: 4,
+            }}
+          >
+            <Typography
+              variant="h4"
+              sx={{ color: textColor, order: isMobile ? 2 : 1 }}
+            >
+              {pageTitle}
+            </Typography>
+            <PokeNav
+              pokemonData={pokemonData}
+              onPokemonClick={handlePokemonClick}
+              textColor={textColor}
+              sx={{ order: isMobile ? 1 : 2 }}
+            />
+          </Box>
           <Container
             sx={{
-              mt: 8,
+              mt: 0,
               display: "flex",
               flexDirection: "column",
             }}
+            maxWidth={false} // This ensures the Container always takes full width
           >
             {children}
           </Container>

@@ -7,16 +7,14 @@ const MainContent = () => {
 
   return (
     <>
-      <Typography variant="h3" gutterBottom color="textPrimary">
-        Leafy Village{" "}
-      </Typography>
+      <Typography variant="h3" gutterBottom color="textPrimary"></Typography>
     </>
   );
 };
 
 function LeafyVillage() {
   return (
-    <Layout>
+    <Layout pageTitle="Leafy Village">
       <MainContent />
     </Layout>
   );

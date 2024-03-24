@@ -7,16 +7,14 @@ const MainContent = () => {
 
   return (
     <>
-      <Typography variant="h3" gutterBottom color="textPrimary">
-        Moonlight Field{" "}
-      </Typography>
+      <Typography variant="h3" gutterBottom color="textPrimary"></Typography>
     </>
   );
 };
 
 function MoonlightField() {
   return (
-    <Layout>
+    <Layout pageTitle="Moonlight Field">
       <MainContent />
     </Layout>
   );

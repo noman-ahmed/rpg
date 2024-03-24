@@ -13,6 +13,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { trainerStats } from "../data/trainerStats";
+import { releaseNotes } from "../data/releaseNotes";
 
 // Utility function to format stat keys
 const formatStatKey = (key) => {
@@ -30,17 +31,13 @@ const MainContent = () => {
   return (
     <Grid
       container
-      justifyContent="center"
       spacing={2}
-      sx={{ width: "100%", maxWidth: 1200, margin: "auto" }}
+      sx={{
+        width: "100%",
+        margin: "auto",
+      }}
     >
-      <Grid item xs={12}>
-        <Typography variant="h3" gutterBottom color="textPrimary">
-          Trainer Stats
-        </Typography>
-      </Grid>
-
-      <Grid item xs={12} md={6}>
+      <Grid item xs={12} md={4} sx={{ mb: 4 }}>
         <TableContainer
           component={Paper}
           sx={{
@@ -57,6 +54,7 @@ const MainContent = () => {
                     backgroundColor: "#0F141A",
                     color: theme.palette.getContrastText("#0F141A"),
                     borderTop: "3px solid #ea80fc",
+                    fontSize: "1.2rem",
                   }}
                 >
                   Info
@@ -68,6 +66,7 @@ const MainContent = () => {
                     backgroundColor: "#0F141A",
                     color: theme.palette.getContrastText("#0F141A"),
                     borderTop: "3px solid #ea80fc",
+                    fontSize: "1.2rem",
                   }}
                 >
                   Stats
@@ -75,8 +74,14 @@ const MainContent = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {Object.entries(trainerStats).map(([stat, value]) => (
-                <TableRow key={stat}>
+              {Object.entries(trainerStats).map(([stat, value], index) => (
+                <TableRow
+                  key={stat}
+                  sx={{
+                    backgroundColor:
+                      index % 2 ? theme.palette.action.hover : "inherit",
+                  }}
+                >
                   <TableCell
                     component="th"
                     scope="row"
@@ -111,16 +116,69 @@ const MainContent = () => {
         </TableContainer>
       </Grid>
 
-      <Grid item xs={12} md={6}>
-        <Typography
-          variant="h4"
-          gutterBottom
-          color="textPrimary"
-          sx={{ border: "1px solid #E0E0E0", borderRadius: "10px", p: 4 }}
-        >
-          News & Updates
-        </Typography>
-        {/* Insert content for news, release notes, and updates here */}
+      <Grid item xs={12} sx={{ p: 2 }}>
+        <Paper sx={{ overflow: "auto", p: 4 }}>
+          <Typography variant="h4" gutterBottom color="textPrimary">
+            RPG Updates
+          </Typography>
+          <Grid
+            container
+            spacing={2}
+            sx={{ display: "flex", alignItems: "stretch" }}
+          >
+            {releaseNotes.map((note, index) => (
+              <Grid item xs={12} md={6} key={index} sx={{ display: "flex" }}>
+                <Paper
+                  sx={{
+                    mb: 2,
+                    p: 2,
+                    width: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  <Typography
+                    variant="h5"
+                    sx={{ fontWeight: "bold", mt: 2, mb: 1 }}
+                  >
+                    {note.title}
+                  </Typography>
+                  {note.changes.map((change, changeIndex) => (
+                    <div
+                      key={changeIndex}
+                      sx={{ display: "flex", alignItems: "center", mb: 1 }}
+                    >
+                      <Typography
+                        variant="overline"
+                        sx={{
+                          backgroundColor: theme.palette.success.main,
+                          color: "#fff",
+                          borderRadius: 1,
+                          px: 1,
+                          py: 0.25,
+                          mr: 1,
+                        }}
+                      >
+                        {change.type}
+                      </Typography>
+                      <Typography variant="body2">
+                        {change.description}
+                      </Typography>
+                    </div>
+                  ))}
+                  <Typography
+                    variant="caption"
+                    display="block"
+                    gutterBottom
+                    sx={{ mb: 2, mt: "auto" }}
+                  >
+                    {note.date}
+                  </Typography>
+                </Paper>
+              </Grid>
+            ))}
+          </Grid>
+        </Paper>
       </Grid>
     </Grid>
   );
@@ -128,7 +186,7 @@ const MainContent = () => {
 
 function Dashboard() {
   return (
-    <Layout>
+    <Layout pageTitle="Trainer Stats">
       <MainContent />
     </Layout>
   );

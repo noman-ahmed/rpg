@@ -7,16 +7,14 @@ const MainContent = () => {
 
   return (
     <>
-      <Typography variant="h3" gutterBottom color="textPrimary">
-        Sign Out{" "}
-      </Typography>
+      <Typography variant="h3" gutterBottom color="textPrimary"></Typography>
     </>
   );
 };
 
 function SignOut() {
   return (
-    <Layout>
+    <Layout pageTitle="Sign Out">
       <MainContent />
     </Layout>
   );

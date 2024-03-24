@@ -7,16 +7,14 @@ const MainContent = () => {
 
   return (
     <>
-      <Typography variant="h3" gutterBottom color="textPrimary">
-        Dark Meadow{" "}
-      </Typography>
+      <Typography variant="h3" gutterBottom color="textPrimary"></Typography>
     </>
   );
 };
 
 function DarkMeadow() {
   return (
-    <Layout>
+    <Layout pageTitle="Dark Meadow">
       <MainContent />
     </Layout>
   );

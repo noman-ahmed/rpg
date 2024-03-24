@@ -7,16 +7,14 @@ const MainContent = () => {
 
   return (
     <>
-      <Typography variant="h3" gutterBottom color="textPrimary">
-        Pokedex{" "}
-      </Typography>
+      <Typography variant="h3" gutterBottom color="textPrimary"></Typography>
     </>
   );
 };
 
 function Pokedex() {
   return (
-    <Layout>
+    <Layout pageTitle="Pokedex">
       <MainContent />
     </Layout>
   );

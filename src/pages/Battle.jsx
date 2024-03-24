@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import Layout from "./Layout";
 import {
   Box,
   Grid,
@@ -24,7 +25,7 @@ const theme = createTheme({
   },
 });
 
-const Battle = () => {
+const MainContent = () => {
   const [pokemonList, setPokemonList] = useState([]);
   const [selectedPokemon1, setSelectedPokemon1] = useState(null);
   const [selectedPokemon2, setSelectedPokemon2] = useState(null);
@@ -95,72 +96,76 @@ const Battle = () => {
   );
 
   return (
-    <ThemeProvider theme={theme}>
-      <Box className={`${styles.BoxTheme} wrapper`} component="main">
-        <Grid
-          container
-          justifyContent="center"
-          alignItems="center"
-          spacing={2}
-          sx={{ width: "100%", maxWidth: 1200 }}
-        >
-          <Grid item xs={12}>
-            <Typography variant="h3" sx={{ mb: 4, textAlign: "center", mt: 2 }}>
-              Battle
-            </Typography>
-          </Grid>
-          <Grid item xs={12} md={5} sx={{ textAlign: "center" }}>
-            <Autocomplete
-              value={selectedPokemon1}
-              onChange={handleChange(setSelectedPokemon1)}
-              options={pokemonList}
-              isOptionEqualToValue={(option, value) => option === value}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Select Pokémon 1"
-                  variant="standard"
-                  sx={{ maxWidth: "345px", mb: 8 }}
-                />
-              )}
+    <Grid
+      container
+      justifyContent="center"
+      alignItems="center"
+      spacing={2}
+      sx={{ width: "100%", maxWidth: 1200 }}
+    >
+      <Grid item xs={12}>
+        <Typography variant="h3" sx={{ mb: 4, textAlign: "center", mt: 2 }}>
+          Battle
+        </Typography>
+      </Grid>
+      <Grid item xs={12} md={5} sx={{ textAlign: "center" }}>
+        <Autocomplete
+          value={selectedPokemon1}
+          onChange={handleChange(setSelectedPokemon1)}
+          options={pokemonList}
+          isOptionEqualToValue={(option, value) => option === value}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Select Pokémon 1"
+              variant="standard"
+              sx={{ maxWidth: "345px", mb: 8 }}
             />
-            {selectedPokemon1 ? (
-              <Pokemon pokemonName={selectedPokemon1} />
-            ) : (
-              <NoPokemonSelectedCard />
-            )}
-          </Grid>
-          <Grid item xs={12} md={2} sx={{ textAlign: "center" }}>
-            <Typography variant="h4" sx={{ mx: 2, mt: { xs: 2, md: 12 } }}>
-              vs.
-            </Typography>
-          </Grid>
-          <Grid item xs={12} md={5} sx={{ textAlign: "center" }}>
-            <Autocomplete
-              value={selectedPokemon2}
-              onChange={handleChange(setSelectedPokemon2)}
-              options={pokemonList}
-              isOptionEqualToValue={(option, value) => option === value}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Select Pokémon 2"
-                  variant="standard"
-                  sx={{ maxWidth: "345px", mb: 8 }}
-                />
-              )}
+          )}
+        />
+        {selectedPokemon1 ? (
+          <Pokemon pokemonName={selectedPokemon1} />
+        ) : (
+          <NoPokemonSelectedCard />
+        )}
+      </Grid>
+      <Grid item xs={12} md={2} sx={{ textAlign: "center" }}>
+        <Typography variant="h4" sx={{ mx: 2, mt: { xs: 2, md: 12 } }}>
+          vs.
+        </Typography>
+      </Grid>
+      <Grid item xs={12} md={5} sx={{ textAlign: "center" }}>
+        <Autocomplete
+          value={selectedPokemon2}
+          onChange={handleChange(setSelectedPokemon2)}
+          options={pokemonList}
+          isOptionEqualToValue={(option, value) => option === value}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Select Pokémon 2"
+              variant="standard"
+              sx={{ maxWidth: "345px", mb: 8 }}
             />
+          )}
+        />
 
-            {selectedPokemon2 ? (
-              <Pokemon pokemonName={selectedPokemon2} />
-            ) : (
-              <NoPokemonSelectedCard />
-            )}
-          </Grid>
-        </Grid>
-      </Box>
-    </ThemeProvider>
+        {selectedPokemon2 ? (
+          <Pokemon pokemonName={selectedPokemon2} />
+        ) : (
+          <NoPokemonSelectedCard />
+        )}
+      </Grid>
+    </Grid>
   );
 };
+
+function Battle() {
+  return (
+    <Layout>
+      <MainContent />
+    </Layout>
+  );
+}
 
 export default Battle;

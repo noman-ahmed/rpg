@@ -7,16 +7,14 @@ const MainContent = () => {
 
   return (
     <>
-      <Typography variant="h3" gutterBottom color="textPrimary">
-        Team Roster{" "}
-      </Typography>
+      <Typography variant="h3" gutterBottom color="textPrimary"></Typography>
     </>
   );
 };
 
 function TeamRoster() {
   return (
-    <Layout>
+    <Layout pageTitle="Team Roster">
       <MainContent />
     </Layout>
   );

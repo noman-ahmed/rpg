@@ -7,16 +7,14 @@ const MainContent = () => {
 
   return (
     <>
-      <Typography variant="h3" gutterBottom color="textPrimary">
-        Set Moves{" "}
-      </Typography>
+      <Typography variant="h3" gutterBottom color="textPrimary"></Typography>
     </>
   );
 };
 
 function SetMoves() {
   return (
-    <Layout>
+    <Layout pageTitle="Set Moves">
       <MainContent />
     </Layout>
   );

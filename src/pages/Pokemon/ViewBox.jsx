@@ -7,16 +7,14 @@ const MainContent = () => {
 
   return (
     <>
-      <Typography variant="h3" gutterBottom color="textPrimary">
-        View Box{" "}
-      </Typography>
+      <Typography variant="h3" gutterBottom color="textPrimary"></Typography>
     </>
   );
 };
 
 function ViewBox() {
   return (
-    <Layout>
+    <Layout pageTitle="View Box">
       <MainContent />
     </Layout>
   );

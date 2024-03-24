@@ -7,16 +7,14 @@ const MainContent = () => {
 
   return (
     <>
-      <Typography variant="h3" gutterBottom color="textPrimary">
-        Release Pokemon{" "}
-      </Typography>
+      <Typography variant="h3" gutterBottom color="textPrimary"></Typography>
     </>
   );
 };
 
 function ReleasePokemon() {
   return (
-    <Layout>
+    <Layout pageTitle="Release Pokemon">
       <MainContent />
     </Layout>
   );

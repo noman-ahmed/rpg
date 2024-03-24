@@ -7,16 +7,14 @@ const MainContent = () => {
 
   return (
     <>
-      <Typography variant="h3" gutterBottom color="textPrimary">
-        My Profile{" "}
-      </Typography>
+      <Typography variant="h3" gutterBottom color="textPrimary"></Typography>
     </>
   );
 };
 
 function Profile() {
   return (
-    <Layout>
+    <Layout pageTitle="My Profile">
       <MainContent />
     </Layout>
   );

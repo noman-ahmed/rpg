@@ -21,9 +21,14 @@ const PromoSection = ({ pokemonName, pokemonSpriteUrl, claimPromoAction }) => (
     <Button
       variant="outlined"
       sx={{
-        color: "primary.main",
+        borderColor: "#ea80fc", // Set the border color to pink
+        color: "#ea80fc", // Set the text color to pink
         marginTop: "10px",
-        "&:hover": { textDecoration: "underline" },
+        "&:hover": {
+          textDecoration: "underline",
+          borderColor: "#ea80fc",
+          color: "#ea80fc",
+        },
       }}
       onClick={claimPromoAction}
     >

@@ -7,16 +7,14 @@ const MainContent = () => {
 
   return (
     <>
-      <Typography variant="h3" gutterBottom color="textPrimary">
-        Individual Rankings{" "}
-      </Typography>
+      <Typography variant="h3" gutterBottom color="textPrimary"></Typography>
     </>
   );
 };
 
 function Individual() {
   return (
-    <Layout>
+    <Layout pageTitle="Individual Rankings">
       <MainContent />
     </Layout>
   );

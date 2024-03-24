@@ -8,7 +8,7 @@ const MainContent = () => {
   return (
     <>
       <Typography variant="h3" gutterBottom color="textPrimary">
-        Rarity List{" "}
+        {" "}
       </Typography>
     </>
   );
@@ -16,7 +16,7 @@ const MainContent = () => {
 
 function Rarity() {
   return (
-    <Layout>
+    <Layout pageTitle="Rarity List">
       <MainContent />
     </Layout>
   );

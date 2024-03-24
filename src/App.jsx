@@ -71,10 +71,6 @@ function App() {
           path="/chatroom"
           element={<ExternalLayout children={<ChatRoom />} />}
         />
-        <Route
-          path="/battle"
-          element={<ExternalLayout children={<Battle />} />}
-        />
         {/* Internal pages */}
         <Route path="/dashboard" element={<Dashboard />} />
         {/* Buy pages */}
@@ -94,6 +90,8 @@ function App() {
         <Route path="/set-moves" element={<SetMoves />} />
         <Route path="/team-roster" element={<TeamRoster />} />
         <Route path="/view-box" element={<ViewBox />} />
+        {/* Battle pages */}
+        <Route path="/battle" element={<Battle />} />
         {/* Ranking pages */}
         <Route path="/individual-rankings" element={<Individual />} />
         <Route path="/rarity-list" element={<Rarity />} />

@@ -38,6 +38,46 @@ const CustomDrawer = ({ menuSections }) => {
   // Drawer width responsive adjustment
   const drawerWidth = isMobile ? "100%" : 240;
 
+  const selectIcon = (itemName) => {
+    switch (itemName) {
+      case "Team Roster":
+        return <GroupIcon />;
+      case "View Box":
+        return <VisibilityIcon />;
+      case "Set Moves":
+        return <MoveToInboxIcon />;
+      case "Pokedex":
+        return <ImportContactsIcon />;
+      case "Leafy Village":
+        return <GrassIcon />;
+      case "Moonlight Field":
+        return <NightsStayIcon />;
+      case "Dark Meadow":
+        return <ExploreIcon />;
+      case "Create a Trade":
+      case "Trade Interests":
+      case "Complete a Trade":
+        return <SwapHorizIcon />;
+      case "Buy Pokemon":
+        return <ShoppingCartIcon />;
+      case "Sell Pokemon":
+        return <StoreIcon />;
+      case "Release Pokemon":
+        return <FreeBreakfastIcon />;
+      case "Individual Rankings":
+      case "Team Rankings":
+        return <BarChartIcon />;
+      case "Rarity List":
+        return <ListAltIcon />;
+      case "My Profile":
+        return <AccountCircleIcon />;
+      case "Sign Out":
+        return <ExitToAppIcon />;
+      default:
+        return <MenuIcon />;
+    }
+  };
+
   return (
     <>
       {/* Display the IconButton when in mobile view. Adjust color for visibility */}
