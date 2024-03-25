@@ -100,7 +100,11 @@ const Layout = ({ children, pageTitle }) => {
           >
             <Typography
               variant="h4"
-              sx={{ color: textColor, order: isMobile ? 2 : 1 }}
+              sx={{
+                color: textColor,
+                order: isMobile ? 2 : 1,
+                fontWeight: "700",
+              }}
             >
               {pageTitle}
             </Typography>

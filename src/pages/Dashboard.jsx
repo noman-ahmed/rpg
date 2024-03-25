@@ -11,6 +11,7 @@ import {
   TableBody,
   Grid,
   useTheme,
+  Box,
 } from "@mui/material";
 import { trainerStats } from "../data/trainerStats";
 import { releaseNotes } from "../data/releaseNotes";
@@ -37,7 +38,21 @@ const MainContent = () => {
         margin: "auto",
       }}
     >
-      <Grid item xs={12} md={4} sx={{ mb: 4 }}>
+      <Grid item xs={12} md={8}>
+        <Box
+          sx={{
+            width: "100%", // Ensure the banner takes the full width of its container
+            height: 75, // Set the height of the banner
+            backgroundImage:
+              'url("https://assets.pokemon.com//assets/cms2/img/misc/virtual-backgrounds/pokemon/scorbunny.jpg")',
+            backgroundSize: "cover",
+            backgroundPosition: "15% 30%",
+            backgroundRepeat: "no-repeat",
+            borderRadius: theme.shape.borderRadius,
+            mb: 2,
+            border: "2px solid #0F1419",
+          }}
+        />
         <TableContainer
           component={Paper}
           sx={{
@@ -114,20 +129,60 @@ const MainContent = () => {
             </TableBody>
           </Table>
         </TableContainer>
+        <Paper sx={{ overflow: "auto", mt: 2 }}>
+          <Typography
+            variant="h4"
+            gutterBottom
+            color="textPrimary"
+            sx={{
+              backgroundColor: "#0F141A",
+              borderTop: "3px solid #ea80fc",
+              p: "1rem",
+              lineHeight: "1.5rem",
+              fontSize: "1.2rem",
+              color: "#ffffff",
+              fontWeight: "700",
+            }}
+          >
+            News
+          </Typography>
+          <Grid
+            container
+            spacing={2}
+            sx={{ display: "flex", alignItems: "stretch", p: 4 }}
+          >
+            <Typography variant="h5" sx={{ fontWeight: "bold", mt: 2, mb: 1 }}>
+              More content to come..
+            </Typography>
+          </Grid>
+        </Paper>
       </Grid>
 
-      <Grid item xs={12} sx={{ p: 2 }}>
-        <Paper sx={{ overflow: "auto", p: 4 }}>
-          <Typography variant="h4" gutterBottom color="textPrimary">
+      <Grid item xs={12} md={4} sx={{ p: 2 }}>
+        <Paper sx={{ overflow: "auto" }}>
+          <Typography
+            variant="h4"
+            gutterBottom
+            color="textPrimary"
+            sx={{
+              backgroundColor: "#0F141A",
+              borderTop: "3px solid #ea80fc",
+              p: "1rem",
+              lineHeight: "1.5rem",
+              fontSize: "1.2rem",
+              color: "#ffffff",
+              fontWeight: "700",
+            }}
+          >
             RPG Updates
           </Typography>
           <Grid
             container
             spacing={2}
-            sx={{ display: "flex", alignItems: "stretch" }}
+            sx={{ display: "flex", alignItems: "stretch", p: 4 }}
           >
             {releaseNotes.map((note, index) => (
-              <Grid item xs={12} md={6} key={index} sx={{ display: "flex" }}>
+              <Grid item xs={12} md={12} key={index} sx={{ display: "flex" }}>
                 <Paper
                   sx={{
                     mb: 2,
