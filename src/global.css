@@ -248,31 +248,38 @@ form {
 
 .pokeNavWrapper {
   display: flex;
-  justify-content: flex-end; /* Corrected for right alignment */
+  justify-content: flex-end; /* Align items to the right */
   align-items: center;
-  margin-top: 10px;
 }
 
 .pokeNavMenu {
   list-style: none;
   display: flex;
   padding-left: 0;
-  /* Removed justify-content: center; to allow media query to control it */
 }
 
 .pokeNavItem {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
   margin: 5px 10px;
   background-color: #0f1419;
   border-radius: 10px;
   transition: all 0.3s ease;
+  height: 60px; /* Size of the container */
+  width: 60px; /* Size of the container */
 }
 
 .pokeNavSprite {
-  height: 40px;
-  width: 40px;
+  height: 40px; /* Size of the sprite */
+  width: 40px; /* Size of the sprite */
+  object-fit: contain; /* Keep the aspect ratio of the sprite */
+}
+
+.pokeNavSpriteDefault {
+  height: 25px; /* Smaller size for the default image */
+  width: 25px; /* Smaller size for the default image */
+  object-fit: contain; /* Keep the aspect ratio of the default image */
 }
 
 .pokeNavLabel,
@@ -288,16 +295,15 @@ form {
 
 /* Responsive styles for top nav */
 @media (max-width: 600px) {
-  /* Example breakpoint, adjust as needed */
   .pokeNavWrapper {
-    justify-content: center; /* Center wrapper on mobile */
+    justify-content: center; /* Center the nav on mobile */
   }
   .pokeNavMenu {
-    justify-content: center; /* Center menu items on mobile */
-    flex-wrap: wrap;
+    justify-content: center; /* Center the items on mobile */
+    flex-wrap: wrap; /* Allow the items to wrap on mobile */
   }
   .pokeNavItem {
-    margin: 10px;
+    margin: 10px; /* Increase margin for tap targets on mobile */
   }
 }
 

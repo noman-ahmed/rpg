@@ -85,14 +85,13 @@ const Layout = ({ children, pageTitle }) => {
             backgroundColor: backgroundColor,
           }}
         >
-          {/* This Box wraps the PokeNav and the title */}
           <Box
             sx={{
               display: "flex",
-              flexDirection: isMobile ? "column-reverse" : "row", // Column-reverse for mobile, row for desktop
+              flexDirection: isMobile ? "column-reverse" : "row",
               alignItems: "center",
-              justifyContent: isMobile ? "center" : "space-between", // Center for mobile, space-between for desktop
-              backgroundColor: "#f5f5f5", // Dark color as fallback
+              justifyContent: isMobile ? "center" : "space-between",
+              backgroundColor: "#f5f5f5",
               color: textColor,
               pr: 4,
               pl: 4,
@@ -102,7 +101,7 @@ const Layout = ({ children, pageTitle }) => {
               variant="h4"
               sx={{
                 color: textColor,
-                order: isMobile ? 2 : 1,
+                order: isMobile ? 2 : "unset", // reset order for desktop
                 fontWeight: "700",
               }}
             >
@@ -112,7 +111,7 @@ const Layout = ({ children, pageTitle }) => {
               pokemonData={pokemonData}
               onPokemonClick={handlePokemonClick}
               textColor={textColor}
-              sx={{ order: isMobile ? 1 : 2 }}
+              sx={{ order: isMobile ? 1 : "unset" }} // reset order for desktop
             />
           </Box>
           <Container
