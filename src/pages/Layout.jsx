@@ -92,7 +92,7 @@ const Layout = ({ children, pageTitle }) => {
               flexDirection: isMobile ? "column-reverse" : "row", // Column-reverse for mobile, row for desktop
               alignItems: "center",
               justifyContent: isMobile ? "center" : "space-between", // Center for mobile, space-between for desktop
-              backgroundColor: "#f7f7f7", // Dark color as fallback
+              backgroundColor: "#f5f5f5", // Dark color as fallback
               color: textColor,
               pr: 4,
               pl: 4,
