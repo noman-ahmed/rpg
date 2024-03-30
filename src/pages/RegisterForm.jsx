@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 import {
   Box,
@@ -18,25 +19,14 @@ import {
   Grid,
   Link as MuiLink,
 } from "@mui/material";
-import { Link } from "react-router-dom";
-
-const steps = ["Fill out information", "Choose your starter", "Join a team"];
-
-const formFieldsConfig = [
-  { id: "username", label: "Username", type: "text" },
-  { id: "email", label: "Email Address", type: "email" },
-  { id: "password", label: "Password", type: "password" },
-  { id: "confirmPassword", label: "Confirm Password", type: "password" },
-];
-
-const teamDescriptions = {
-  "Team Rocket":
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus.",
-  "Team Aqua":
-    "Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.",
-  "Team Magma":
-    "Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi.",
-};
+import { Link, useNavigate } from "react-router-dom";
+import {
+  steps,
+  formFieldsConfig,
+  teamDescriptions,
+  avatars,
+} from "../contexts/constants.jsx";
+import { validateEmail, validatePassword } from "../contexts/validators.jsx";
 
 function RegisterForm() {
   let theme = createTheme({
@@ -57,50 +47,80 @@ function RegisterForm() {
     confirmPassword: "",
   });
 
-  const avatars = {
-    bulbasaur: "https://img.pokemondb.net/sprites/home/normal/bulbasaur.png",
-    charmander: "https://img.pokemondb.net/sprites/home/normal/charmander.png",
-    squirtle: "https://img.pokemondb.net/sprites/home/normal/squirtle.png",
-    chikorita: "https://img.pokemondb.net/sprites/home/normal/chikorita.png",
-    cyndaquil: "https://img.pokemondb.net/sprites/home/normal/cyndaquil.png",
-    totodile: "https://img.pokemondb.net/sprites/home/normal/totodile.png",
-    treecko: "https://img.pokemondb.net/sprites/home/normal/treecko.png",
-    mudkip: "https://img.pokemondb.net/sprites/home/normal/mudkip.png",
-    torchic: "https://img.pokemondb.net/sprites/home/normal/torchic.png",
-    chimchar: "https://img.pokemondb.net/sprites/home/normal/chimchar.png",
-    piplup: "https://img.pokemondb.net/sprites/home/normal/piplup.png",
-    turtwig: "https://img.pokemondb.net/sprites/home/normal/turtwig.png",
-  };
-
   // Set the first avatar as the default selected value
-  const [avatar, setAvatar] = useState(Object.values(avatars)[0]);
-  const [team, setTeam] = useState(Object.keys(teamDescriptions)[0]);
+  const [selectedStarter, setSelectedStarter] = useState("bulbasaur"); // Use Pokémon name as initial state
+  const [team, setTeam] = useState("Team Rocket");
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
 
   const handleChange = (prop) => (event) => {
-    setFormFields({ ...formFields, [prop]: event.target.value });
+    const value = event.target.value;
+    setFormFields({ ...formFields, [prop]: value });
+
+    // Reset errors
+    let newErrors = { ...errors, [prop]: "" };
+
+    if (prop === "email" && !validateEmail(value)) {
+      newErrors[prop] = "Email is invalid";
+    } else if (prop === "password" && !validatePassword(value)) {
+      newErrors[prop] = "Password doesn't meet requirements";
+    } else if (prop === "confirmPassword" && formFields.password !== value) {
+      newErrors["confirmPassword"] = "Passwords don't match";
+    }
+
+    setErrors(newErrors);
   };
 
-  const handleAvatarChange = (event) => {
-    setAvatar(event.target.value);
-  };
-
-  const handleTeamChange = (event) => {
-    setTeam(event.target.value);
-  };
-
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  const handleNext = async () => {
+    if (activeStep < steps.length - 1) {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    } else {
+      // Assuming this is the last step - attempt to register
+      if (allValid()) {
+        // Make sure all validations passed
+        try {
+          const registrationData = {
+            ...formFields,
+            starterPokemon: selectedStarter,
+            team,
+          };
+          await axios.post(
+            "http://localhost:3001/api/register",
+            registrationData
+          );
+          navigate("/login"); // Redirect on success
+        } catch (error) {
+          console.error(
+            "Registration error:",
+            error.response?.data || error.message
+          );
+          // Handle server-side errors (e.g., username taken) here
+          setErrors({
+            ...errors,
+            general: "Registration failed. Please try again.",
+          });
+        }
+      }
+    }
   };
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  function getFormFields(fields) {
+  const handleAvatarChange = (event) => {
+    setSelectedStarter(event.target.value);
+  };
+
+  const handleTeamChange = (event) => {
+    setTeam(event.target.value);
+  };
+
+  const getFormFields = (fields) => {
     return fields.map(({ id, label, type }) => (
       <TextField
         key={id}
+        id={id}
         label={label}
         type={type}
         fullWidth
@@ -111,17 +131,15 @@ function RegisterForm() {
         helperText={errors[id]}
       />
     ));
-  }
+  };
 
   function getStepContent(stepIndex) {
     switch (stepIndex) {
       case 0:
         return getFormFields(formFieldsConfig);
       case 1:
-        // Find the name of the currently selected avatar for display
-        const selectedAvatarName = Object.keys(avatars).find(
-          (name) => avatars[name] === avatar
-        );
+        // Find the URL of the currently selected avatar for display
+        const avatarUrl = avatars[selectedStarter]; // Use selectedStarter to get the avatar URL
         return (
           <FormControl fullWidth component="fieldset">
             <FormLabel component="legend">
@@ -130,12 +148,12 @@ function RegisterForm() {
             {/* Display selected Pokémon image, name, and level */}
             <Box sx={{ textAlign: "center", my: 2 }}>
               <Avatar
-                src={avatar}
+                src={avatarUrl} // Use the URL from the avatars object
                 sx={{ width: 100, height: 100, margin: "auto" }}
               />
               <Typography variant="h6" sx={{ mt: 2 }}>
-                {selectedAvatarName.charAt(0).toUpperCase() +
-                  selectedAvatarName.slice(1)}{" "}
+                {selectedStarter.charAt(0).toUpperCase() +
+                  selectedStarter.slice(1)}
                 {/* Capitalize the name */}
               </Typography>
               <Typography variant="subtitle1">Level: 5</Typography>
@@ -143,7 +161,7 @@ function RegisterForm() {
             <RadioGroup
               aria-label="starter"
               name="starter"
-              value={avatar}
+              value={selectedStarter} // Use selectedStarter here for value
               onChange={handleAvatarChange}
               row={false}
             >
@@ -156,19 +174,25 @@ function RegisterForm() {
                     sx={{ borderTop: "1px solid rgba(0, 0, 0, 0.12)", p: 4 }}
                   >
                     <FormControlLabel
-                      value={url}
+                      value={name} // Use the Pokémon name as the value for the radio button
                       control={<Radio />}
                       label={
-                        <Box sx={{ display: "flex", alignItems: "center" }}>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                          }}
+                        >
                           <Avatar
-                            sx={{
-                              width: 64,
-                              height: 64,
-                              marginRight: theme.spacing(1),
-                            }}
+                            sx={{ width: 64, height: 64, margin: "auto" }}
                             src={url}
                             alt={name}
                           />
+                          <Typography variant="caption" sx={{ mt: 1 }}>
+                            {name.charAt(0).toUpperCase() + name.slice(1)}
+                            {/* Capitalize the name */}
+                          </Typography>
                         </Box>
                       }
                     />
@@ -227,6 +251,15 @@ function RegisterForm() {
     }
   }
 
+  const allValid = () => {
+    // Validate that no error messages are present and all fields are filled for the first step
+    return (
+      Object.values(errors).every((error) => error === "") &&
+      (activeStep !== 0 ||
+        Object.values(formFields).every((value) => value.trim() !== ""))
+    );
+  };
+
   return (
     <Box
       sx={{
@@ -238,73 +271,60 @@ function RegisterForm() {
         mx: "auto",
       }}
     >
-      {/* Wrap Stepper and Paper in a Box to control their widths together */}
-      <Box
-        sx={{
-          width: "100%",
-          maxWidth: 600,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
+      <Stepper
+        activeStep={activeStep}
+        alternativeLabel
+        sx={{ width: "100%", mb: 2 }}
       >
-        <Stepper
-          activeStep={activeStep}
-          alternativeLabel
-          sx={{ width: "100%", mb: 2 }}
+        {steps.map((label) => (
+          <Step key={label}>
+            <StepLabel>{label}</StepLabel>
+          </Step>
+        ))}
+      </Stepper>
+      <Paper
+        elevation={0}
+        variant="outlined"
+        sx={{ p: { xs: 2, sm: 3 }, mt: 2, width: "100%" }}
+      >
+        {getStepContent(activeStep)}
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            gap: theme.spacing(2),
+            mt: theme.spacing(2),
+            width: "100%",
+          }}
         >
-          {steps.map((label) => (
-            <Step key={label}>
-              <StepLabel>{label}</StepLabel>
-            </Step>
-          ))}
-        </Stepper>
-
-        <Paper
-          elevation={0}
-          variant="outlined"
-          sx={{ p: { xs: 2, sm: 3 }, mt: 2, width: "100%" }}
-        >
-          {/* Content inside Paper is already constrained to the same width by the outer Box */}
-          {getStepContent(activeStep)}
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-              gap: theme.spacing(2),
-              mt: theme.spacing(2),
-              width: "100%",
-            }}
-          >
-            <Typography variant="body2">
-              Already have an account?{" "}
-              <MuiLink component={Link} to="/login" underline="hover">
-                Login Now
-              </MuiLink>
-            </Typography>
-            <Box>
-              <Button
-                disabled={activeStep === 0}
-                onClick={handleBack}
-                sx={{ textTransform: "none" }}
-              >
-                Back
-              </Button>
-              <Button
-                variant="contained"
-                onClick={handleNext}
-                sx={{ textTransform: "none", color: "#fff", ml: 1 }}
-              >
-                {activeStep === steps.length - 1 ? "Finish" : "Next"}
-              </Button>
-            </Box>
+          <Typography variant="body2">
+            Already have an account?{" "}
+            <MuiLink component={Link} to="/login" underline="hover">
+              Login Now
+            </MuiLink>
+          </Typography>
+          <Box>
+            <Button
+              disabled={activeStep === 0}
+              onClick={handleBack}
+              sx={{ textTransform: "none" }}
+            >
+              Back
+            </Button>
+            <Button
+              variant="contained"
+              onClick={handleNext}
+              disabled={!allValid()}
+              sx={{ textTransform: "none", color: "#fff", ml: 1 }}
+            >
+              {activeStep === steps.length - 1 ? "Finish" : "Next"}
+            </Button>
           </Box>
-        </Paper>
-      </Box>
+        </Box>
+      </Paper>
     </Box>
   );
 }
-
 export default RegisterForm;

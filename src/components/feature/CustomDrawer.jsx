@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
+import axios from "axios";
 import {
   Box,
   Drawer,
@@ -15,82 +16,64 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import MenuIcon from "@mui/icons-material/Menu"; // For the toggle button in mobile view
-import PromoSection from "./PromoSection"; // Adjust the path as necessary
+import MenuIcon from "@mui/icons-material/Menu";
+import PromoSection from "./PromoSection";
+import { useAuth } from "../../auth/AuthContext";
+import ashImage from "../../assets/Ash.png"; // Import the image
 
 const CustomDrawer = ({ menuSections }) => {
   const location = useLocation();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [mobileOpen, setMobileOpen] = useState(false);
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
+  const [userID, setUserID] = useState(null); // State to store the user ID
+
+  const { user, logout } = useAuth(); // Get user object from AuthContext
 
   const paperBackgroundColor = "#0F1419";
   const textColor = "#FFFFFF";
 
-  // Example Pokémon for the promo section
   const pokemonName = "Shiny Articuno";
   const pokemonSpriteUrl =
     "https://img.pokemondb.net/sprites/home/shiny/1x/articuno.png";
 
-  // Drawer width responsive adjustment
   const drawerWidth = isMobile ? "100%" : 240;
 
-  const selectIcon = (itemName) => {
-    switch (itemName) {
-      case "Team Roster":
-        return <GroupIcon />;
-      case "View Box":
-        return <VisibilityIcon />;
-      case "Set Moves":
-        return <MoveToInboxIcon />;
-      case "Pokedex":
-        return <ImportContactsIcon />;
-      case "Leafy Village":
-        return <GrassIcon />;
-      case "Moonlight Field":
-        return <NightsStayIcon />;
-      case "Dark Meadow":
-        return <ExploreIcon />;
-      case "Create a Trade":
-      case "Trade Interests":
-      case "Complete a Trade":
-        return <SwapHorizIcon />;
-      case "Buy Pokemon":
-        return <ShoppingCartIcon />;
-      case "Sell Pokemon":
-        return <StoreIcon />;
-      case "Release Pokemon":
-        return <FreeBreakfastIcon />;
-      case "Individual Rankings":
-      case "Team Rankings":
-        return <BarChartIcon />;
-      case "Rarity List":
-        return <ListAltIcon />;
-      case "My Profile":
-        return <AccountCircleIcon />;
-      case "Sign Out":
-        return <ExitToAppIcon />;
-      default:
-        return <MenuIcon />;
-    }
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
   };
+
+  const handleSignOut = () => {
+    logout();
+  };
+
+  useEffect(() => {
+    if (user && !user.userId) {
+      // Consider fetching user info here only if necessary. Ideally, userId should be part of the auth context post-login.
+      axios
+        .get("/api/userinfo")
+        .then((response) => {
+          // Update context or local state with response data as needed.
+          // Ensure response data structure matches your expectations.
+        })
+        .catch((error) => {
+          console.error("Failed to fetch user info:", error);
+        });
+    }
+  }, [user]);
 
   return (
     <>
-      {/* Display the IconButton when in mobile view. Adjust color for visibility */}
       {isMobile && (
         <IconButton
           onClick={handleDrawerToggle}
           sx={{
             color: theme.palette.getContrastText(
               theme.palette.background.default
-            ), // Dynamically get contrast text color
+            ),
             position: "absolute",
             zIndex: theme.zIndex.drawer + 1,
-            ...(mobileOpen && { display: "none" }), // Hide icon when drawer is open
+            ...(mobileOpen && { display: "none" }),
           }}
         >
           <MenuIcon />
@@ -101,7 +84,7 @@ const CustomDrawer = ({ menuSections }) => {
         open={mobileOpen}
         onClose={handleDrawerToggle}
         ModalProps={{
-          keepMounted: true, // Better open performance on mobile.
+          keepMounted: true,
         }}
         sx={{
           width: drawerWidth,
@@ -111,12 +94,10 @@ const CustomDrawer = ({ menuSections }) => {
             backgroundColor: paperBackgroundColor,
             color: textColor,
           },
-          // Ensure the drawer is above the IconButton
           zIndex: theme.zIndex.drawer + (mobileOpen ? 0 : 2),
         }}
       >
         <Box sx={{ overflow: "auto", flex: 1 }}>
-          {/* Avatar Section */}
           <Box
             sx={{
               display: "flex",
@@ -128,7 +109,7 @@ const CustomDrawer = ({ menuSections }) => {
             }}
           >
             <Avatar
-              src="https://archives.bulbagarden.net/media/upload/thumb/8/8b/Spr_Masters_Ash_2.png/240px-Spr_Masters_Ash_2.png"
+              src={ashImage} // Use the imported image
               sx={{ width: 120, height: 120, marginBottom: 2 }}
               alt="Ash"
             />
@@ -136,11 +117,10 @@ const CustomDrawer = ({ menuSections }) => {
               variant="subtitle1"
               sx={{ color: textColor, fontWeight: "bold" }}
             >
-              #1 - Nomes
+              {user ? `#${user.userId} - ${user.username}` : "Guest"}
             </Typography>
           </Box>
 
-          {/* Dashboard Link */}
           <ListItem
             button
             component={Link}
@@ -161,7 +141,6 @@ const CustomDrawer = ({ menuSections }) => {
               }}
             />
           </ListItem>
-          {/* Menu Sections */}
           {menuSections.map((section, index) => (
             <Accordion
               key={index}
@@ -175,12 +154,11 @@ const CustomDrawer = ({ menuSections }) => {
                 "&:before": { display: "none" },
                 "&.Mui-expanded": { margin: "auto" },
                 "&:not(:last-child)": { marginBottom: 0 },
-                // Ensure no extra padding/margin is added on expansion
                 ".MuiAccordionSummary-root": {
-                  padding: "0 16px", // Adjust as needed, but keep consistent
+                  padding: "0 16px",
                 },
                 ".MuiAccordionDetails-root": {
-                  padding: "0 16px", // Adjust as needed, but keep consistent
+                  padding: "0 16px",
                 },
               }}
             >
@@ -200,8 +178,11 @@ const CustomDrawer = ({ menuSections }) => {
                   <ListItem
                     button
                     key={item.name}
-                    component={Link}
-                    to={item.path}
+                    onClick={
+                      item.name === "Sign Out" ? handleSignOut : undefined
+                    }
+                    component={item.name === "Sign Out" ? "div" : Link}
+                    to={item.name === "Sign Out" ? "/" : item.path}
                     sx={{
                       backgroundColor:
                         location.pathname === item.path
@@ -223,7 +204,6 @@ const CustomDrawer = ({ menuSections }) => {
             </Accordion>
           ))}
         </Box>
-        {/* Promo Section Fixed at the Bottom */}
         <Box
           sx={{
             padding: "16px",

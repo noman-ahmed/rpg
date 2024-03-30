@@ -1,6 +1,13 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import Box from "@mui/material/Box";
+import { useAuth } from "./auth/AuthContext";
+import ProtectedRoute from "./auth/ProtectedRoute";
 
 // Components
 import Header from "./components/header";
@@ -44,20 +51,23 @@ import Team from "./pages/Rankings/Team";
 import Profile from "./pages/Account/Profile";
 import SignOut from "./pages/Account/SignOut";
 
-function ExternalLayout({ children }) {
+function ExternalLayout({ children, showHeader = true }) {
   return (
     <>
-      <Header />
+      {showHeader && <Header />}
       <Box component="main">{children}</Box>
       <Footer />
     </>
   );
 }
+
 function App() {
+  const { isLoggedIn } = useAuth();
+
   return (
     <Router>
       <Routes>
-        {/* External pages */}
+        {/* External and Protected pages */}
         <Route path="/" element={<ExternalLayout children={<Home />} />} />
         <Route
           path="/login"
@@ -71,34 +81,185 @@ function App() {
           path="/chatroom"
           element={<ExternalLayout children={<ChatRoom />} />}
         />
-        {/* Internal pages */}
-        <Route path="/dashboard" element={<Dashboard />} />
-        {/* Buy pages */}
-        <Route path="/buy-pokemon" element={<BuyPokemon />} />
-        <Route path="/release-pokemon" element={<ReleasePokemon />} />
-        <Route path="/sell-pokemon" element={<SellPokemon />} />
-        {/* Trade pages */}
-        <Route path="/create-trade" element={<TradePokemon />} />
-        <Route path="/trade-interests" element={<TradeInterests />} />
-        <Route path="/complete-trade" element={<TradeComplete />} />
-        {/* Maps pages */}
-        <Route path="/leafy-village" element={<LeafyVillage />} />
-        <Route path="/moonlight-field" element={<MoonlightField />} />
-        <Route path="/dark-meadow" element={<DarkMeadow />} />
-        {/* Pokemon pages */}
-        <Route path="/pokedex" element={<Pokedex />} />
-        <Route path="/set-moves" element={<SetMoves />} />
-        <Route path="/team-roster" element={<TeamRoster />} />
-        <Route path="/view-box" element={<ViewBox />} />
-        {/* Battle pages */}
-        <Route path="/battle" element={<Battle />} />
-        {/* Ranking pages */}
-        <Route path="/individual-rankings" element={<Individual />} />
-        <Route path="/rarity-list" element={<Rarity />} />
-        <Route path="/team-rankings" element={<Team />} />
-        {/* Account pages */}
-        <Route path="/my-profile" element={<Profile />} />
-        <Route path="/sign-out" element={<SignOut />} />
+
+        {/* Using ExternalLayout to wrap ProtectedRoute for consistent layout */}
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <ExternalLayout children={<Dashboard />} showHeader={false} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/buy-pokemon"
+          element={
+            <ProtectedRoute>
+              <ExternalLayout children={<BuyPokemon />} showHeader={false} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/release-pokemon"
+          element={
+            <ProtectedRoute>
+              <ExternalLayout
+                children={<ReleasePokemon />}
+                showHeader={false}
+              />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/sell-pokemon"
+          element={
+            <ProtectedRoute>
+              <ExternalLayout children={<SellPokemon />} showHeader={false} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/create-trade"
+          element={
+            <ProtectedRoute>
+              <ExternalLayout children={<TradePokemon />} showHeader={false} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/trade-interests"
+          element={
+            <ProtectedRoute>
+              <ExternalLayout
+                children={<TradeInterests />}
+                showHeader={false}
+              />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/complete-trade"
+          element={
+            <ProtectedRoute>
+              <ExternalLayout children={<TradeComplete />} showHeader={false} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/leafy-village"
+          element={
+            <ProtectedRoute>
+              <ExternalLayout children={<LeafyVillage />} showHeader={false} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/moonlight-field"
+          element={
+            <ProtectedRoute>
+              <ExternalLayout
+                children={<MoonlightField />}
+                showHeader={false}
+              />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dark-meadow"
+          element={
+            <ProtectedRoute>
+              <ExternalLayout children={<DarkMeadow />} showHeader={false} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/pokedex"
+          element={
+            <ProtectedRoute>
+              <ExternalLayout children={<Pokedex />} showHeader={false} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/set-moves"
+          element={
+            <ProtectedRoute>
+              <ExternalLayout children={<SetMoves />} showHeader={false} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/team-roster"
+          element={
+            <ProtectedRoute>
+              <ExternalLayout children={<TeamRoster />} showHeader={false} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/view-box"
+          element={
+            <ProtectedRoute>
+              <ExternalLayout children={<ViewBox />} showHeader={false} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/battle"
+          element={
+            <ProtectedRoute>
+              <ExternalLayout children={<Battle />} showHeader={false} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/individual-rankings"
+          element={
+            <ProtectedRoute>
+              <ExternalLayout children={<Individual />} showHeader={false} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/rarity-list"
+          element={
+            <ProtectedRoute>
+              <ExternalLayout children={<Rarity />} showHeader={false} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/team-rankings"
+          element={
+            <ProtectedRoute>
+              <ExternalLayout children={<Team />} showHeader={false} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/my-profile"
+          element={
+            <ProtectedRoute>
+              <ExternalLayout children={<Profile />} showHeader={false} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/sign-out"
+          element={
+            <ProtectedRoute>
+              <ExternalLayout children={<SignOut />} showHeader={false} />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Redirect unknown routes based on isLoggedIn status */}
+        <Route
+          path="*"
+          element={
+            <Navigate to={isLoggedIn ? "/dashboard" : "/login"} replace />
+          }
+        />
       </Routes>
     </Router>
   );
