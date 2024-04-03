@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import axios from "axios";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { register } from "../auth/authSlice"; // Adjust the import path as necessary
 import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 import {
   Box,
@@ -19,7 +21,7 @@ import {
   Grid,
   Link as MuiLink,
 } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   steps,
   formFieldsConfig,
@@ -46,18 +48,18 @@ function RegisterForm() {
     password: "",
     confirmPassword: "",
   });
-
-  // Set the first avatar as the default selected value
-  const [selectedStarter, setSelectedStarter] = useState("bulbasaur"); // Use Pokémon name as initial state
+  const [selectedStarter, setSelectedStarter] = useState("bulbasaur");
   const [team, setTeam] = useState("Team Rocket");
   const [errors, setErrors] = useState({});
+  const [serverError, setServerError] = useState("");
+
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleChange = (prop) => (event) => {
     const value = event.target.value;
     setFormFields({ ...formFields, [prop]: value });
 
-    // Reset errors
     let newErrors = { ...errors, [prop]: "" };
 
     if (prop === "email" && !validateEmail(value)) {
@@ -75,30 +77,19 @@ function RegisterForm() {
     if (activeStep < steps.length - 1) {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
     } else {
-      // Assuming this is the last step - attempt to register
       if (allValid()) {
-        // Make sure all validations passed
         try {
           const registrationData = {
             ...formFields,
             starterPokemon: selectedStarter,
             team,
           };
-          await axios.post(
-            "http://localhost:3001/api/register",
-            registrationData
-          );
-          navigate("/login"); // Redirect on success
+          await dispatch(register(registrationData)).unwrap();
+          navigate("/login");
         } catch (error) {
-          console.error(
-            "Registration error:",
-            error.response?.data || error.message
-          );
-          // Handle server-side errors (e.g., username taken) here
-          setErrors({
-            ...errors,
-            general: "Registration failed. Please try again.",
-          });
+          const message =
+            error.message || "Registration failed. Please try again.";
+          setServerError(message);
         }
       }
     }
@@ -133,37 +124,33 @@ function RegisterForm() {
     ));
   };
 
-  function getStepContent(stepIndex) {
+  const getStepContent = (stepIndex) => {
     switch (stepIndex) {
       case 0:
         return getFormFields(formFieldsConfig);
       case 1:
-        // Find the URL of the currently selected avatar for display
-        const avatarUrl = avatars[selectedStarter]; // Use selectedStarter to get the avatar URL
+        const avatarUrl = avatars[selectedStarter];
         return (
           <FormControl fullWidth component="fieldset">
             <FormLabel component="legend">
               Choose your starter Pokemon
             </FormLabel>
-            {/* Display selected Pokémon image, name, and level */}
             <Box sx={{ textAlign: "center", my: 2 }}>
               <Avatar
-                src={avatarUrl} // Use the URL from the avatars object
+                src={avatarUrl}
                 sx={{ width: 100, height: 100, margin: "auto" }}
               />
               <Typography variant="h6" sx={{ mt: 2 }}>
                 {selectedStarter.charAt(0).toUpperCase() +
                   selectedStarter.slice(1)}
-                {/* Capitalize the name */}
               </Typography>
               <Typography variant="subtitle1">Level: 5</Typography>
             </Box>
             <RadioGroup
               aria-label="starter"
               name="starter"
-              value={selectedStarter} // Use selectedStarter here for value
+              value={selectedStarter}
               onChange={handleAvatarChange}
-              row={false}
             >
               <Grid container sx={{ textAlign: "center" }}>
                 {Object.entries(avatars).map(([name, url]) => (
@@ -174,7 +161,7 @@ function RegisterForm() {
                     sx={{ borderTop: "1px solid rgba(0, 0, 0, 0.12)", p: 4 }}
                   >
                     <FormControlLabel
-                      value={name} // Use the Pokémon name as the value for the radio button
+                      value={name}
                       control={<Radio />}
                       label={
                         <Box
@@ -191,7 +178,6 @@ function RegisterForm() {
                           />
                           <Typography variant="caption" sx={{ mt: 1 }}>
                             {name.charAt(0).toUpperCase() + name.slice(1)}
-                            {/* Capitalize the name */}
                           </Typography>
                         </Box>
                       }
@@ -220,7 +206,7 @@ function RegisterForm() {
                         key={teamKey}
                         value={teamKey}
                         control={<Radio />}
-                        label={`${teamKey}`} // Simplified label
+                        label={`${teamKey}`}
                       />
                     )
                   )}
@@ -239,8 +225,7 @@ function RegisterForm() {
                 }}
               >
                 <Typography variant="body1" sx={{ textAlign: "center" }}>
-                  {teamDescriptions[team]}{" "}
-                  {/* Display the description of the selected team */}
+                  {teamDescriptions[team]}
                 </Typography>
               </Paper>
             </Grid>
@@ -249,14 +234,12 @@ function RegisterForm() {
       default:
         return "Unknown step";
     }
-  }
+  };
 
   const allValid = () => {
-    // Validate that no error messages are present and all fields are filled for the first step
     return (
       Object.values(errors).every((error) => error === "") &&
-      (activeStep !== 0 ||
-        Object.values(formFields).every((value) => value.trim() !== ""))
+      Object.values(formFields).every((value) => value.trim() !== "")
     );
   };
 
@@ -321,6 +304,9 @@ function RegisterForm() {
             >
               {activeStep === steps.length - 1 ? "Finish" : "Next"}
             </Button>
+            {serverError && (
+              <Typography color="error">{serverError}</Typography>
+            )}
           </Box>
         </Box>
       </Paper>

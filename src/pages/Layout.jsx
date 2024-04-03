@@ -8,7 +8,7 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
-import CustomDrawer from "../components/feature/CustomDrawer.jsx";
+import Sidebar from "../components/feature/Sidebar.jsx";
 import PromoSection from "../components/feature/PromoSection";
 import PokeNav from "../components/feature/PokeNav.jsx";
 import { initialPokemonData } from "../data/pokemonData.jsx";
@@ -70,7 +70,7 @@ const Layout = ({ children, pageTitle }) => {
           backgroundSize: "50%",
         }}
       >
-        <CustomDrawer
+        <Sidebar
           drawerWidth={drawerWidth}
           paperBackgroundColor={paperBackgroundColor}
           textColor={textColor}

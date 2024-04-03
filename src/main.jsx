@@ -1,7 +1,8 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
-import { AuthContextProvider } from "./auth/AuthContext"; // Adjust the import path as necessary
+import { Provider } from "react-redux"; // Import the Provider from react-redux
+import store from "./store"; // Import your Redux store
 import "./global.css";
 
 const container = document.getElementById("root");
@@ -9,8 +10,8 @@ const root = createRoot(container); // Create a root.
 
 root.render(
   <React.StrictMode>
-    <AuthContextProvider>
+    <Provider store={store}>
       <App />
-    </AuthContextProvider>
+    </Provider>
   </React.StrictMode>
 );

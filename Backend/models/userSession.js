@@ -12,7 +12,7 @@ const userSessionSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
-    token: {
+    accessToken: {
       type: String,
       required: true,
     },

@@ -5,13 +5,10 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
+import { useSelector } from "react-redux";
 import Box from "@mui/material/Box";
-import { useAuth } from "./auth/AuthContext";
 import ProtectedRoute from "./auth/ProtectedRoute";
-
-// Components
-import Header from "./components/header";
-import Footer from "./components/footer/Footer";
+import ExternalLayout from "./pages/ExternalLayout"; // Import the modified ExternalLayout component
 
 // Main Pages
 import Home from "./pages";
@@ -51,35 +48,44 @@ import Team from "./pages/Rankings/Team";
 import Profile from "./pages/Account/Profile";
 import SignOut from "./pages/Account/SignOut";
 
-function ExternalLayout({ children, showHeader = true }) {
-  return (
-    <>
-      {showHeader && <Header />}
-      <Box component="main">{children}</Box>
-      <Footer />
-    </>
-  );
-}
-
 function App() {
-  const { isLoggedIn } = useAuth();
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   return (
     <Router>
       <Routes>
         {/* External and Protected pages */}
-        <Route path="/" element={<ExternalLayout children={<Home />} />} />
+        <Route
+          path="/"
+          element={
+            <ExternalLayout isLoggedIn={isLoggedIn}>
+              <Home />
+            </ExternalLayout>
+          }
+        />
         <Route
           path="/login"
-          element={<ExternalLayout children={<Login />} />}
+          element={
+            <ExternalLayout isLoggedIn={isLoggedIn}>
+              <Login />
+            </ExternalLayout>
+          }
         />
         <Route
           path="/register"
-          element={<ExternalLayout children={<Register />} />}
+          element={
+            <ExternalLayout isLoggedIn={isLoggedIn}>
+              <Register />
+            </ExternalLayout>
+          }
         />
         <Route
           path="/chatroom"
-          element={<ExternalLayout children={<ChatRoom />} />}
+          element={
+            <ExternalLayout isLoggedIn={isLoggedIn}>
+              <ChatRoom />
+            </ExternalLayout>
+          }
         />
 
         {/* Using ExternalLayout to wrap ProtectedRoute for consistent layout */}
@@ -87,7 +93,9 @@ function App() {
           path="/dashboard"
           element={
             <ProtectedRoute>
-              <ExternalLayout children={<Dashboard />} showHeader={false} />
+              <ExternalLayout isLoggedIn={isLoggedIn}>
+                <Dashboard />
+              </ExternalLayout>
             </ProtectedRoute>
           }
         />
@@ -95,7 +103,9 @@ function App() {
           path="/buy-pokemon"
           element={
             <ProtectedRoute>
-              <ExternalLayout children={<BuyPokemon />} showHeader={false} />
+              <ExternalLayout isLoggedIn={isLoggedIn}>
+                <BuyPokemon />
+              </ExternalLayout>
             </ProtectedRoute>
           }
         />
@@ -103,10 +113,9 @@ function App() {
           path="/release-pokemon"
           element={
             <ProtectedRoute>
-              <ExternalLayout
-                children={<ReleasePokemon />}
-                showHeader={false}
-              />
+              <ExternalLayout isLoggedIn={isLoggedIn}>
+                <ReleasePokemon />
+              </ExternalLayout>
             </ProtectedRoute>
           }
         />
@@ -114,7 +123,9 @@ function App() {
           path="/sell-pokemon"
           element={
             <ProtectedRoute>
-              <ExternalLayout children={<SellPokemon />} showHeader={false} />
+              <ExternalLayout isLoggedIn={isLoggedIn}>
+                <SellPokemon />
+              </ExternalLayout>
             </ProtectedRoute>
           }
         />
@@ -122,7 +133,9 @@ function App() {
           path="/create-trade"
           element={
             <ProtectedRoute>
-              <ExternalLayout children={<TradePokemon />} showHeader={false} />
+              <ExternalLayout isLoggedIn={isLoggedIn}>
+                <TradePokemon />
+              </ExternalLayout>
             </ProtectedRoute>
           }
         />
@@ -130,10 +143,9 @@ function App() {
           path="/trade-interests"
           element={
             <ProtectedRoute>
-              <ExternalLayout
-                children={<TradeInterests />}
-                showHeader={false}
-              />
+              <ExternalLayout isLoggedIn={isLoggedIn}>
+                <TradeInterests />
+              </ExternalLayout>
             </ProtectedRoute>
           }
         />
@@ -141,7 +153,9 @@ function App() {
           path="/complete-trade"
           element={
             <ProtectedRoute>
-              <ExternalLayout children={<TradeComplete />} showHeader={false} />
+              <ExternalLayout isLoggedIn={isLoggedIn}>
+                <TradeComplete />
+              </ExternalLayout>
             </ProtectedRoute>
           }
         />
@@ -149,7 +163,9 @@ function App() {
           path="/leafy-village"
           element={
             <ProtectedRoute>
-              <ExternalLayout children={<LeafyVillage />} showHeader={false} />
+              <ExternalLayout isLoggedIn={isLoggedIn}>
+                <LeafyVillage />
+              </ExternalLayout>
             </ProtectedRoute>
           }
         />
@@ -157,10 +173,9 @@ function App() {
           path="/moonlight-field"
           element={
             <ProtectedRoute>
-              <ExternalLayout
-                children={<MoonlightField />}
-                showHeader={false}
-              />
+              <ExternalLayout isLoggedIn={isLoggedIn}>
+                <MoonlightField />
+              </ExternalLayout>
             </ProtectedRoute>
           }
         />
@@ -168,7 +183,9 @@ function App() {
           path="/dark-meadow"
           element={
             <ProtectedRoute>
-              <ExternalLayout children={<DarkMeadow />} showHeader={false} />
+              <ExternalLayout isLoggedIn={isLoggedIn}>
+                <DarkMeadow />
+              </ExternalLayout>
             </ProtectedRoute>
           }
         />
@@ -176,7 +193,9 @@ function App() {
           path="/pokedex"
           element={
             <ProtectedRoute>
-              <ExternalLayout children={<Pokedex />} showHeader={false} />
+              <ExternalLayout isLoggedIn={isLoggedIn}>
+                <Pokedex />
+              </ExternalLayout>
             </ProtectedRoute>
           }
         />
@@ -184,7 +203,9 @@ function App() {
           path="/set-moves"
           element={
             <ProtectedRoute>
-              <ExternalLayout children={<SetMoves />} showHeader={false} />
+              <ExternalLayout isLoggedIn={isLoggedIn}>
+                <SetMoves />
+              </ExternalLayout>
             </ProtectedRoute>
           }
         />
@@ -192,7 +213,9 @@ function App() {
           path="/team-roster"
           element={
             <ProtectedRoute>
-              <ExternalLayout children={<TeamRoster />} showHeader={false} />
+              <ExternalLayout isLoggedIn={isLoggedIn}>
+                <TeamRoster />
+              </ExternalLayout>
             </ProtectedRoute>
           }
         />
@@ -200,7 +223,9 @@ function App() {
           path="/view-box"
           element={
             <ProtectedRoute>
-              <ExternalLayout children={<ViewBox />} showHeader={false} />
+              <ExternalLayout isLoggedIn={isLoggedIn}>
+                <ViewBox />
+              </ExternalLayout>
             </ProtectedRoute>
           }
         />
@@ -208,7 +233,9 @@ function App() {
           path="/battle"
           element={
             <ProtectedRoute>
-              <ExternalLayout children={<Battle />} showHeader={false} />
+              <ExternalLayout isLoggedIn={isLoggedIn}>
+                <Battle />
+              </ExternalLayout>
             </ProtectedRoute>
           }
         />
@@ -216,7 +243,9 @@ function App() {
           path="/individual-rankings"
           element={
             <ProtectedRoute>
-              <ExternalLayout children={<Individual />} showHeader={false} />
+              <ExternalLayout isLoggedIn={isLoggedIn}>
+                <Individual />
+              </ExternalLayout>
             </ProtectedRoute>
           }
         />
@@ -224,7 +253,9 @@ function App() {
           path="/rarity-list"
           element={
             <ProtectedRoute>
-              <ExternalLayout children={<Rarity />} showHeader={false} />
+              <ExternalLayout isLoggedIn={isLoggedIn}>
+                <Rarity />
+              </ExternalLayout>
             </ProtectedRoute>
           }
         />
@@ -232,7 +263,9 @@ function App() {
           path="/team-rankings"
           element={
             <ProtectedRoute>
-              <ExternalLayout children={<Team />} showHeader={false} />
+              <ExternalLayout isLoggedIn={isLoggedIn}>
+                <Team />
+              </ExternalLayout>
             </ProtectedRoute>
           }
         />
@@ -240,7 +273,9 @@ function App() {
           path="/my-profile"
           element={
             <ProtectedRoute>
-              <ExternalLayout children={<Profile />} showHeader={false} />
+              <ExternalLayout isLoggedIn={isLoggedIn}>
+                <Profile />
+              </ExternalLayout>
             </ProtectedRoute>
           }
         />
@@ -248,12 +283,14 @@ function App() {
           path="/sign-out"
           element={
             <ProtectedRoute>
-              <ExternalLayout children={<SignOut />} showHeader={false} />
+              <ExternalLayout isLoggedIn={isLoggedIn}>
+                <SignOut />
+              </ExternalLayout>
             </ProtectedRoute>
           }
         />
 
-        {/* Redirect unknown routes based on isLoggedIn status */}
+        {/* Redirect based on authentication status */}
         <Route
           path="*"
           element={

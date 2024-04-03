@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import axios from "axios";
 import {
   Box,
   Drawer,
@@ -18,49 +17,34 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MenuIcon from "@mui/icons-material/Menu";
 import PromoSection from "./PromoSection";
-import { useAuth } from "../../auth/AuthContext";
-import ashImage from "../../assets/Ash.png"; // Import the image
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../../auth/authSlice"; // Update import path as necessary
+import ashImage from "../../assets/Ash.png";
 
-const CustomDrawer = ({ menuSections }) => {
+const Sidebar = ({ menuSections }) => {
   const location = useLocation();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [userID, setUserID] = useState(null); // State to store the user ID
 
-  const { user, logout } = useAuth(); // Get user object from AuthContext
+  const dispatch = useDispatch();
+  // Retrieve user info from Redux store
+  const userInfo = useSelector((state) => state.auth.userInfo);
+
+  console.log("userInfo:", userInfo); // Log userInfo for debugging
 
   const paperBackgroundColor = "#0F1419";
   const textColor = "#FFFFFF";
-
   const pokemonName = "Shiny Articuno";
   const pokemonSpriteUrl =
     "https://img.pokemondb.net/sprites/home/shiny/1x/articuno.png";
-
   const drawerWidth = isMobile ? "100%" : 240;
 
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
-
+  const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
   const handleSignOut = () => {
-    logout();
+    // Dispatch logout action
+    dispatch(logout());
   };
-
-  useEffect(() => {
-    if (user && !user.userId) {
-      // Consider fetching user info here only if necessary. Ideally, userId should be part of the auth context post-login.
-      axios
-        .get("/api/userinfo")
-        .then((response) => {
-          // Update context or local state with response data as needed.
-          // Ensure response data structure matches your expectations.
-        })
-        .catch((error) => {
-          console.error("Failed to fetch user info:", error);
-        });
-    }
-  }, [user]);
 
   return (
     <>
@@ -117,7 +101,8 @@ const CustomDrawer = ({ menuSections }) => {
               variant="subtitle1"
               sx={{ color: textColor, fontWeight: "bold" }}
             >
-              {user ? `#${user.userId} - ${user.username}` : "Guest"}
+              #{userInfo?.userId ? userInfo.userId : "N/A"} -{" "}
+              {userInfo?.username ? userInfo.username : "N/A"}
             </Typography>
           </Box>
 
@@ -221,4 +206,4 @@ const CustomDrawer = ({ menuSections }) => {
   );
 };
 
-export default CustomDrawer;
+export default Sidebar;

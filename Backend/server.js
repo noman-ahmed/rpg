@@ -22,10 +22,17 @@ app.use(limiter);
 
 app.use(express.json());
 
-const corsOptions = {
-  origin: process.env.FRONTEND_ORIGIN, // Securely setting CORS origin
-};
+// Assuming 'app' is your Express.js application
 
+app.use((req, res, next) => {
+  res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
+  next();
+});
+
+const corsOptions = {
+  origin: process.env.FRONTEND_ORIGIN,
+  credentials: true,
+};
 app.use(cors(corsOptions));
 
 async function startServer() {

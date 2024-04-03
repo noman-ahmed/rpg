@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import authService from "../services/authService"; // Ensure this path is correct
 import {
   Box,
   Paper,
@@ -9,13 +8,14 @@ import {
   Link as MuiLink,
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../auth/AuthContext";
+import { useDispatch } from "react-redux"; // Import useDispatch
+import { login } from "../auth/authSlice"; // Update import path as necessary
 
 function LoginForm() {
   const [form, setForm] = useState({ username: "", password: "" });
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const { login } = useAuth(); // This is your context's login method
+  const dispatch = useDispatch(); // Use useDispatch to get the dispatch function
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,15 +27,23 @@ function LoginForm() {
     setError("");
 
     try {
-      const { username, password } = form;
-      const { userId, token } = await authService.login(username, password); // Destructure userId and token directly
-
-      login({ username, userId, token }); // Pass userId and token directly
-      navigate("/dashboard");
+      // Dispatch the login async thunk with username and password
+      const actionResult = await dispatch(
+        login({ username: form.username, password: form.password })
+      );
+      if (login.fulfilled.match(actionResult)) {
+        // Navigate to dashboard if login was successful
+        navigate("/dashboard");
+      } else {
+        // Handle case where login wasn't successful
+        // Error message should ideally come from the rejected action's payload or error
+        const errorMessage =
+          actionResult.error?.message || "Login failed. Please try again.";
+        setError(errorMessage);
+      }
     } catch (error) {
-      const errorMessage = error.response
-        ? error.response.data.message
-        : error.message;
+      // Handle unexpected errors
+      const errorMessage = error.message || "An unexpected error occurred.";
       setError(errorMessage);
     }
   };
