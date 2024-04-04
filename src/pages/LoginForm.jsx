@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Paper,
@@ -7,15 +7,28 @@ import {
   TextField,
   Link as MuiLink,
 } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux"; // Import useDispatch
-import { login } from "../auth/authSlice"; // Update import path as necessary
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useAuthDispatch, loginUser } from "../contexts/AuthContext"; // Adjust the import path as needed
 
 function LoginForm() {
   const [form, setForm] = useState({ username: "", password: "" });
   const [error, setError] = useState("");
+  const [registrationSuccessMessage, setRegistrationSuccessMessage] =
+    useState("");
   const navigate = useNavigate();
-  const dispatch = useDispatch(); // Use useDispatch to get the dispatch function
+  const location = useLocation();
+  const dispatch = useAuthDispatch(); // Use context's dispatch function
+
+  useEffect(() => {
+    // Check if redirected from RegisterForm with success state
+    if (location.state?.registrationSuccess) {
+      setRegistrationSuccessMessage(
+        "Your account was created successfully! Login to continue."
+      );
+      // Clear the state so the message doesn't reappear on refresh
+      history.replaceState({}, "");
+    }
+  }, [location]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,23 +40,13 @@ function LoginForm() {
     setError("");
 
     try {
-      // Dispatch the login async thunk with username and password
-      const actionResult = await dispatch(
-        login({ username: form.username, password: form.password })
-      );
-      if (login.fulfilled.match(actionResult)) {
-        // Navigate to dashboard if login was successful
-        navigate("/dashboard");
-      } else {
-        // Handle case where login wasn't successful
-        // Error message should ideally come from the rejected action's payload or error
-        const errorMessage =
-          actionResult.error?.message || "Login failed. Please try again.";
-        setError(errorMessage);
-      }
+      await loginUser(dispatch, {
+        username: form.username,
+        password: form.password,
+      });
+      navigate("/dashboard");
     } catch (error) {
-      // Handle unexpected errors
-      const errorMessage = error.message || "An unexpected error occurred.";
+      const errorMessage = error.message || "Login failed. Please try again.";
       setError(errorMessage);
     }
   };
@@ -63,6 +66,11 @@ function LoginForm() {
       }}
     >
       <Paper elevation={0} variant="outlined" sx={{ p: 4 }}>
+        {registrationSuccessMessage && (
+          <Typography color="green" sx={{ mb: 2, fontWeight: "500" }}>
+            {registrationSuccessMessage}
+          </Typography>
+        )}
         <TextField
           error={!!error}
           helperText={error || " "}

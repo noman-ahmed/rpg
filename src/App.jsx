@@ -5,10 +5,10 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import { useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import ProtectedRoute from "./auth/ProtectedRoute";
-import ExternalLayout from "./pages/ExternalLayout"; // Import the modified ExternalLayout component
+import ExternalLayout from "./pages/ExternalLayout";
+import { useAuthState } from "./contexts/AuthContext";
 
 // Main Pages
 import Home from "./pages";
@@ -49,7 +49,7 @@ import Profile from "./pages/Account/Profile";
 import SignOut from "./pages/Account/SignOut";
 
 function App() {
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const { isLoggedIn } = useAuthState();
 
   return (
     <Router>

@@ -17,8 +17,12 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MenuIcon from "@mui/icons-material/Menu";
 import PromoSection from "./PromoSection";
-import { useSelector, useDispatch } from "react-redux";
-import { logout } from "../../auth/authSlice"; // Update import path as necessary
+// Removed useSelector, useDispatch imports from redux
+import {
+  useAuthState,
+  useAuthDispatch,
+  logoutUser,
+} from "../../contexts/AuthContext"; // Adjust import path as necessary
 import ashImage from "../../assets/Ash.png";
 
 const Sidebar = ({ menuSections }) => {
@@ -27,11 +31,8 @@ const Sidebar = ({ menuSections }) => {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const dispatch = useDispatch();
-  // Retrieve user info from Redux store
-  const userInfo = useSelector((state) => state.auth.userInfo);
-
-  console.log("userInfo:", userInfo); // Log userInfo for debugging
+  const authDispatch = useAuthDispatch(); // Use context's dispatch function
+  const { user: user, userInfo: userInfo } = useAuthState(); // Retrieve user info from context state
 
   const paperBackgroundColor = "#0F1419";
   const textColor = "#FFFFFF";
@@ -42,8 +43,7 @@ const Sidebar = ({ menuSections }) => {
 
   const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
   const handleSignOut = () => {
-    // Dispatch logout action
-    dispatch(logout());
+    logoutUser(authDispatch); // Use logoutUser from your context
   };
 
   return (

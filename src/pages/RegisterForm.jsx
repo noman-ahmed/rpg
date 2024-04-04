@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { register } from "../auth/authSlice"; // Adjust the import path as necessary
 import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 import {
   Box,
@@ -29,6 +27,8 @@ import {
   avatars,
 } from "../contexts/constants.jsx";
 import { validateEmail, validatePassword } from "../contexts/validators.jsx";
+// Update the import to use your context
+import { useAuthDispatch, registerUser } from "../contexts/AuthContext";
 
 function RegisterForm() {
   let theme = createTheme({
@@ -53,8 +53,9 @@ function RegisterForm() {
   const [errors, setErrors] = useState({});
   const [serverError, setServerError] = useState("");
 
-  const dispatch = useDispatch();
+  // Component state initialization
   const navigate = useNavigate();
+  const authDispatch = useAuthDispatch(); // Use context's dispatch function
 
   const handleChange = (prop) => (event) => {
     const value = event.target.value;
@@ -84,12 +85,13 @@ function RegisterForm() {
             starterPokemon: selectedStarter,
             team,
           };
-          await dispatch(register(registrationData)).unwrap();
-          navigate("/login");
+          await registerUser(authDispatch, registrationData);
+          // In your RegisterForm component, inside the handleNext function after successful registration:
+          navigate("/login", { state: { registrationSuccess: true } });
         } catch (error) {
-          const message =
-            error.message || "Registration failed. Please try again.";
-          setServerError(message);
+          setServerError(
+            error.message || "Registration failed. Please try again."
+          );
         }
       }
     }
