@@ -2,7 +2,7 @@ import React, { createContext, useContext, useReducer } from "react";
 import axios from "axios";
 
 // Define the base URL for all API calls
-const API_BASE_URL = "http://localhost:3001/api";
+const API_BASE_URL = "https://play.noman.dev/api";
 
 // Create context objects
 const AuthStateContext = createContext();
