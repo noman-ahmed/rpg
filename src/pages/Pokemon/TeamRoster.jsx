@@ -1,21 +1,9 @@
 import React from "react";
 import Layout from "../Layout";
-import {
-  useTheme,
-  Grid,
-  Avatar,
-  Table,
-  TableContainer,
-  Paper,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  Typography,
-} from "@mui/material";
+import { useTheme, Grid, Avatar, Paper, Typography, Box } from "@mui/material";
 
 const MainContent = () => {
-  const theme = useTheme(); // Use the theme
+  const theme = useTheme();
 
   // Dummy data for Pokemon roster (replace with actual data)
   const pokemonRoster = [
@@ -52,83 +40,74 @@ const MainContent = () => {
     },
   ];
 
+  // Extract the central Pokémon
+  const centralPokemon = pokemonRoster[2]; // Mew
+  const surroundingPokemon = pokemonRoster.filter(
+    (pokemon) => pokemon !== centralPokemon
+  );
+
   return (
-    <>
-      {/* Pokemon Roster Table */}
-      <Grid container sx={{ m: 2, pt: 2, pb: 2, pl: 4, pr: 4 }}>
-        <Grid item xs={12} md={4}>
-          <TableContainer
-            component={Paper}
-            sx={{
-              backgroundColor: theme.palette.background.paper,
-              color: theme.palette.text.primary,
-              mb: 2,
-            }}
-          >
-            <Table aria-label="pokemon roster">
-              <TableHead>
-                <TableRow>
-                  <TableCell
-                    sx={{
-                      fontWeight: "bold",
-                      backgroundColor: "#0F141A",
-                      color: theme.palette.getContrastText("#0F141A"),
-                      borderTop: "3px solid #ea80fc",
-                    }}
-                  >
-                    Pokémon
-                  </TableCell>
-                  <TableCell
-                    align="right"
-                    sx={{
-                      fontWeight: "bold",
-                      backgroundColor: "#0F141A",
-                      color: theme.palette.getContrastText("#0F141A"),
-                      borderTop: "3px solid #ea80fc",
-                    }}
-                  >
-                    Level
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {pokemonRoster.map((pokemon, index) => (
-                  <TableRow
-                    key={index}
-                    sx={{
-                      "&:last-child td, &:last-child th": { border: 0 },
-                      backgroundColor:
-                        index % 2 ? theme.palette.action.hover : "inherit",
-                    }}
-                  >
-                    <TableCell
-                      component="th"
-                      scope="row"
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: theme.spacing(2),
-                      }}
-                    >
-                      <Avatar
-                        alt={pokemon.name}
-                        src={pokemon.imageUrl}
-                        sx={{
-                          width: theme.spacing(10),
-                          height: theme.spacing(10),
-                        }}
-                      />
-                      <Typography>{pokemon.name}</Typography>
-                    </TableCell>
-                    <TableCell align="right">Lv. {pokemon.level}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Grid>
+    <Box
+      sx={{ position: "relative", width: "100%", textAlign: "center", mt: 5 }}
+    >
+      <Box
+        sx={{
+          zIndex: 1,
+          backgroundColor: theme.palette.background.default,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Avatar
+          alt={centralPokemon.name}
+          src={centralPokemon.imageUrl}
+          sx={{
+            width: theme.spacing(8),
+            height: theme.spacing(8),
+          }}
+        />
+      </Box>
+      <Grid
+        container
+        spacing={2}
+        justifyContent="center"
+        alignItems="center"
+        sx={{ mt: theme.spacing(20) }}
+      >
+        {surroundingPokemon.map((pokemon, index) => (
+          <Grid item xs={12} sm={2} key={index}>
+            <Paper
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                backgroundColor: theme.palette.background.paper,
+                color: theme.palette.text.primary,
+                padding: theme.spacing(2),
+                textAlign: "center",
+                height: theme.spacing(30), // Increase the height by 200px (original height + 200px)
+              }}
+            >
+              <Avatar
+                alt={pokemon.name}
+                src={pokemon.imageUrl}
+                sx={{
+                  width: theme.spacing(8),
+                  height: theme.spacing(8),
+                  margin: "0 auto",
+                }}
+              />
+              <Typography variant="p" component="div">
+                {pokemon.name}
+              </Typography>
+              <Typography>Lv. {pokemon.level}</Typography>
+            </Paper>
+          </Grid>
+        ))}
       </Grid>
-    </>
+    </Box>
   );
 };
 

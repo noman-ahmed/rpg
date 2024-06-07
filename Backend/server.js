@@ -34,11 +34,7 @@ app.use((req, res, next) => {
   next();
 });
 
-const corsOptions = {
-  origin: process.env.FRONTEND_ORIGIN,
-  credentials: true,
-};
-app.use(cors(corsOptions));
+app.use(cors()); // Warning: This allows all origins, only use for testing
 
 async function startServer() {
   try {

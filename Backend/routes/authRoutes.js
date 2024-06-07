@@ -92,6 +92,19 @@ router.post("/refresh-token", async (req, res) => {
   }
 });
 
+// New route to get a list of all users with their userId and username
+router.get("/user", async (req, res) => {
+  try {
+    // Fetch all users from the database, selecting only the userId and username fields
+    // Note: Adjust "userId" to "_id" or your actual user ID field name if different
+    const users = await User.find({}).select("userId username -_id");
+    res.json(users);
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    res.status(500).send({ message: "Failed to fetch users" });
+  }
+});
+
 // Get user information (example endpoint using async/await and verifyToken middleware)
 router.get("/userinfo", verifyToken, async (req, res) => {
   try {
